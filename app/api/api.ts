@@ -8,4 +8,14 @@ export const API_ENDPOINTS = {
     REFRESH: `${API_URL}/auth/refresh`,
     LOGOUT_ALL: `${API_URL}/auth/logout/all`,
   },
+  USERS: {
+    LIST: `${API_URL}/users`,
+    CREATE: `${API_URL}/users`,
+    GET_BY_ID: (id: string) => `${API_URL}/users/${id}`,
+    UPDATE: (id: string) => `${API_URL}/users/${id}`,
+    DELETE: (id: string) => `${API_URL}/users/${id}`,
+  },
+  RBAC: {
+    ROLES_OPTIONS: `${API_URL}/rbac/roles/options`,
+  },
 };

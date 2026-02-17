@@ -1,0 +1,164 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  SidebarNavItem,
+  sidebarConfig,
+  sidebarFooterConfig,
+} from "@features/layout/config/sidebar";
+
+/**
+ * Collapsible nav item with smooth animation.
+ */
+const NavItem = ({
+  item,
+  depth = 0,
+  onNavigate,
+}: {
+  item: SidebarNavItem;
+  depth?: number;
+  onNavigate?: () => void;
+}) => {
+  const pathname = usePathname();
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const isActive = item.href ? pathname === item.href : false;
+  const hasActiveChild = item.children?.some(
+    (child) => child.href === pathname,
+  );
+
+  const Icon = item.icon;
+
+  const handleClick = () => {
+    if (item.children) {
+      setIsExpanded(!isExpanded);
+    } else if (onNavigate) {
+      onNavigate();
+    }
+  };
+
+  if (item.children) {
+    return (
+      <div className="space-y-1">
+        <button
+          onClick={handleClick}
+          className={cn(
+            "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors",
+            "text-white/80 hover:bg-white/10 hover:text-white",
+            (isActive || hasActiveChild) && "bg-white/15 text-white",
+          )}
+          style={{ paddingLeft: `${12 + depth * 12}px` }}
+        >
+          <div className="flex items-center gap-3">
+            <Icon className="h-4 w-4" />
+            <span>{item.label}</span>
+          </div>
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 transition-transform duration-200",
+              !isExpanded && "-rotate-90",
+            )}
+          />
+        </button>
+        <div
+          className={cn(
+            "overflow-hidden transition-all duration-200 ease-in-out",
+            isExpanded ? "max-h-40 opacity-100" : "max-h-0 opacity-0",
+          )}
+        >
+          <div className="space-y-1 pt-1">
+            {item.children.map((child) => (
+              <NavItem
+                key={child.href}
+                item={child}
+                depth={depth + 1}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={item.href || "#"}
+      onClick={onNavigate}
+      className={cn(
+        "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+        "text-white/80 hover:bg-white/10 hover:text-white",
+        isActive && "bg-white/15 text-white",
+      )}
+      style={{ paddingLeft: `${12 + depth * 12}px` }}
+    >
+      <Icon className="h-4 w-4" />
+      <span>{item.label}</span>
+    </Link>
+  );
+};
+
+/**
+ * Sidebar navigation component.
+ * Renders the sidebar with logo, navigation items, and system info footer.
+ * Uses branding-dark color theme.
+ * 
+ * @param isOpen - Whether the sidebar is open (for mobile)
+ * @param onClose - Callback to close the sidebar (for mobile)
+ * 
+ * @example
+ * <SidebarNav />
+ */
+export function SidebarNav({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
+  const handleNavigate = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  return (
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col bg-branding-dark text-white transition-transform duration-300 lg:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        {/* Logo / Brand */}
+        <div className="flex h-16 items-center border-b border-white/10 px-6">
+          <h1 className="text-xl font-bold">RBAC Admin</h1>
+        </div>
+
+        {/* Navigation Items */}
+        <nav className="flex-1 space-y-1 overflow-y-auto p-4">
+          {sidebarConfig.map((item) => (
+            <NavItem key={item.label} item={item} onNavigate={handleNavigate} />
+          ))}
+        </nav>
+
+        {/* System Info Footer */}
+        <div className="border-t border-white/10 px-6 py-4">
+          <p className="text-sm font-medium text-white/80">
+            {sidebarFooterConfig.name}
+          </p>
+          {sidebarFooterConfig.version && (
+            <p className="text-xs text-white/50">{sidebarFooterConfig.version}</p>
+          )}
+        </div>
+      </aside>
+    </>
+  );
+}

@@ -1,23 +1,24 @@
 "use client";
 
-import { useAuth } from "@/features/auth";
-import { LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {
+  DashboardHeader,
+  DashboardStats,
+  QuickActions,
+  UserDistribution,
+} from "@features/dashboard";
 
 export default function DashboardPage() {
-  const { user, logout } = useAuth();
-
   return (
     <div className="p-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="mt-2">Welcome, {user?.name}!</p>
+      <DashboardHeader />
+      <DashboardStats />
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
+        <div className="lg:col-span-3">
+          <QuickActions />
         </div>
-        <Button onClick={logout} variant="destructive">
-          <LogOut className="mr-2 h-4 w-4" />
-          Logout
-        </Button>
+        <div className="lg:col-span-1">
+          <UserDistribution />
+        </div>
       </div>
     </div>
   );

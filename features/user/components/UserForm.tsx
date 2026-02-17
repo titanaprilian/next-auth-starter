@@ -1,0 +1,223 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Circle } from "lucide-react";
+import { userFormSchema, UserFormData } from "../schema/userFormSchema";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Role } from "../types";
+
+interface UserFormProps {
+  defaultValues?: UserFormData;
+  onSubmit: (data: UserFormData) => void;
+  isLoading?: boolean;
+  roles?: Role[];
+  isLoadingRoles?: boolean;
+}
+
+export function UserForm({
+  defaultValues,
+  onSubmit,
+  isLoading,
+  roles = [],
+  isLoadingRoles,
+}: UserFormProps) {
+  const isEditMode = !!defaultValues?.email;
+  const [showPassword, setShowPassword] = useState(false);
+
+  const form = useForm<UserFormData>({
+    resolver: zodResolver(userFormSchema),
+    defaultValues: defaultValues || {
+      name: "",
+      email: "",
+      password: "",
+      roleId: "",
+      status: "active",
+    },
+  });
+
+  return (
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="-mx-6 space-y-5 px-6"
+    >
+      <div className="space-y-2">
+        <Label htmlFor="name" className="text-sm font-medium">
+          Full Name
+        </Label>
+        <Input
+          id="name"
+          placeholder="Enter full name"
+          className="h-10"
+          {...form.register("name")}
+          disabled={isLoading}
+        />
+        {form.formState.errors.name && (
+          <p className="text-sm text-destructive">
+            {form.formState.errors.name.message}
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="email" className="text-sm font-medium">
+          Email Address
+        </Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="Enter email address"
+          className="h-10"
+          {...form.register("email")}
+          disabled={isLoading}
+        />
+        {form.formState.errors.email && (
+          <p className="text-sm text-destructive">
+            {form.formState.errors.email.message}
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="password" className="text-sm font-medium">
+          Password
+        </Label>
+        <div className="relative">
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter password"
+            className="h-10 pr-10"
+            {...form.register("password")}
+            disabled={isLoading}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </button>
+        </div>
+        {form.formState.errors.password && (
+          <p className="text-sm text-destructive">
+            {form.formState.errors.password.message}
+          </p>
+        )}
+        {!isEditMode && !form.formState.errors.password && (
+          <p className="text-xs text-muted-foreground">
+            Password must be at least 6 characters
+          </p>
+        )}
+        {isEditMode && !form.formState.errors.password && (
+          <p className="text-xs text-muted-foreground">
+            Leave blank if you don&apos;t want to change the password
+          </p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <Label htmlFor="role" className="text-sm font-medium">
+            Role
+          </Label>
+          <Select
+            value={form.watch("roleId")}
+            onValueChange={(value) =>
+              form.setValue("roleId", value as UserFormData["roleId"])
+            }
+            disabled={isLoading || isLoadingRoles}
+          >
+            <SelectTrigger className="h-10 w-full">
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              {roles.map((role) => (
+                <SelectItem key={role.id} value={role.id}>
+                  {role.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {form.formState.errors.roleId && (
+            <p className="text-sm text-destructive">
+              {form.formState.errors.roleId.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="status" className="text-sm font-medium">
+            Status
+          </Label>
+          <Select
+            value={form.watch("status")}
+            onValueChange={(value) =>
+              form.setValue("status", value as UserFormData["status"])
+            }
+            disabled={isLoading}
+          >
+            <SelectTrigger className="h-10 w-full">
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="active">
+                <div className="flex items-center gap-2">
+                  <Circle className="h-2.5 w-2.5 fill-green-500 text-green-500" />
+                  Active
+                </div>
+              </SelectItem>
+              <SelectItem value="inactive">
+                <div className="flex items-center gap-2">
+                  <Circle className="h-2.5 w-2.5 fill-red-500 text-red-500" />
+                  Inactive
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          {form.formState.errors.status && (
+            <p className="text-sm text-destructive">
+              {form.formState.errors.status.message}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-3 pt-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => form.reset()}
+          disabled={isLoading}
+        >
+          Reset
+        </Button>
+        <Button type="submit" disabled={isLoading} className="bg-branding-dark">
+          {isLoading ? (
+            <>
+              <Spinner className="mr-2 h-4 w-4" />
+              Saving...
+            </>
+          ) : (
+            "Save Changes"
+          )}
+        </Button>
+      </div>
+    </form>
+  );
+}

@@ -1,7 +1,7 @@
-import { ApiErrorResponse } from "../types";
+import { ApiErrorResponse } from "./types";
 
-export function extractApiError(error: any) {
-  const data: ApiErrorResponse | undefined = error?.response?.data;
+export function extractApiError(error: unknown) {
+  const data: ApiErrorResponse | undefined = (error as any)?.response?.data;
 
   if (!data) {
     return {
