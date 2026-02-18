@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/useTranslation";
 import { Search, Filter, ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Role } from "../types";
+import { userManagementConfig } from "../config/userManagement";
 
 interface UserFiltersProps {
   search: string;
@@ -29,6 +31,7 @@ export function UserFilters({
   onSearchChange,
   onRoleChange,
 }: UserFiltersProps) {
+  const t = useTranslations();
   const currentRole = roles?.find((r) => r.id === role);
 
   return (
@@ -41,7 +44,7 @@ export function UserFilters({
           <div>
             <h2 className="font-semibold">Filters</h2>
             <p className="text-sm text-muted-foreground">
-              Search and filter users
+              {t(userManagementConfig.filterDescriptionKey)}
             </p>
           </div>
         </div>
@@ -50,7 +53,7 @@ export function UserFilters({
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search users..."
+              placeholder={t(userManagementConfig.searchPlaceholderKey)}
               className="w-[200px] pl-9"
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
@@ -65,14 +68,14 @@ export function UserFilters({
                 disabled={isLoadingRoles}
               >
                 {isLoadingRoles
-                  ? "Loading..."
-                  : currentRole?.name || "All Roles"}
+                  ? t("common.loading")
+                  : currentRole?.name || t("common.all")}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onRoleChange("all")}>
-                All Roles
+                {t("common.all")}
               </DropdownMenuItem>
               {roles?.map((r) => (
                 <DropdownMenuItem

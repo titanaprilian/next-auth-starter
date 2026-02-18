@@ -1,7 +1,9 @@
 "use client";
 
-import { Mail, User, Shield, Activity, Circle } from "lucide-react";
+import { useTranslations } from "@/lib/i18n/useTranslation";
+import { Circle } from "lucide-react";
 import { User as UserType, Role } from "../types";
+import { userManagementConfig } from "../config/userManagement";
 
 interface UserViewProps {
   user: UserType;
@@ -9,37 +11,41 @@ interface UserViewProps {
 }
 
 export function UserView({ user, roles }: UserViewProps) {
+  const t = useTranslations();
   const roleName = roles?.find((r) => r.id === user.roleId)?.name || user.roleId;
 
-  const fields = [
-    {
-      label: "Name",
-      value: user.name,
-      icon: User,
-    },
-    {
-      label: "Email",
-      value: user.email,
-      icon: Mail,
-    },
-    {
-      label: "Role",
-      value: roleName,
-      icon: Shield,
-    },
-    {
-      label: "Status",
-      value: user.isActive ? "Active" : "Inactive",
-      icon: Activity,
-      isStatus: true,
-    },
-  ];
+  const fields = userManagementConfig.viewFields.map((field) => {
+    let value: string | React.ReactNode = "";
+
+    switch (field.value) {
+      case "name":
+        value = user.name;
+        break;
+      case "email":
+        value = user.email;
+        break;
+      case "role":
+        value = roleName;
+        break;
+      case "status":
+        value = user.isActive ? t("common.active") : t("common.inactive");
+        break;
+    }
+
+    return {
+      ...field,
+      label: t(field.labelKey),
+      value,
+    };
+  });
+
+  const AvatarIcon = userManagementConfig.avatarIcon;
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col items-center gap-2 py-2">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-branding-dark">
-          <User className="h-7 w-7 text-white" />
+          <AvatarIcon className="h-7 w-7 text-white" />
         </div>
         <div className="text-center">
           <h3 className="text-base font-semibold">{user.name}</h3>
@@ -50,7 +56,7 @@ export function UserView({ user, roles }: UserViewProps) {
       <div className="rounded-lg border">
         {fields.map((field, index) => (
           <div
-            key={field.label}
+            key={field.labelKey}
             className={`flex items-center gap-3 px-3 py-2.5 ${
               index !== fields.length - 1 ? "border-b" : ""
             }`}

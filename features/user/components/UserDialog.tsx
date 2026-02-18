@@ -1,6 +1,6 @@
 "use client";
 
-import { UserPlus, UserPen, UserSearch, X } from "lucide-react";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import { UserView } from "./UserView";
 import { User, UserDialogMode } from "../types";
 import { UserFormData } from "../schema/userFormSchema";
 import { useFetchRole } from "../hooks/useUser";
+import { userManagementConfig } from "../config/userManagement";
 
 interface UserDialogProps {
   isOpen: boolean;
@@ -23,24 +24,6 @@ interface UserDialogProps {
   isLoading?: boolean;
 }
 
-const dialogConfig = {
-  add: {
-    icon: UserPlus,
-    title: "Add New User",
-    description: "Fill in the information below to create a new user account.",
-  },
-  edit: {
-    icon: UserPen,
-    title: "Edit User",
-    description: "Update the user information below.",
-  },
-  view: {
-    icon: UserSearch,
-    title: "User Details",
-    description: "View the user's account information.",
-  },
-};
-
 export function UserDialog({
   isOpen,
   mode,
@@ -49,6 +32,7 @@ export function UserDialog({
   onSubmit,
   isLoading,
 }: UserDialogProps) {
+  const t = useTranslations();
   const { data: rolesData, isLoading: rolesLoading } = useFetchRole();
 
   const defaultValues: UserFormData | undefined = selectedUser
@@ -60,8 +44,8 @@ export function UserDialog({
       }
     : undefined;
 
-  const config = dialogConfig[mode];
-  const Icon = config.icon;
+  const dialogConfig = userManagementConfig.dialog[mode];
+  const Icon = dialogConfig.icon;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -72,9 +56,11 @@ export function UserDialog({
               <Icon className="h-5 w-5 text-white" />
             </div>
             <div>
-              <DialogTitle className="text-lg">{config.title}</DialogTitle>
+              <DialogTitle className="text-lg">
+                {t(dialogConfig.titleKey)}
+              </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
-                {config.description}
+                {t(dialogConfig.descriptionKey)}
               </DialogDescription>
             </div>
           </div>

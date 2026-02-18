@@ -15,11 +15,11 @@ export type StatCardColor =
  * Dashboard stat card configuration.
  */
 export interface DashboardStatCard {
-  title: string;
+  titleKey: string;
   value: string | number;
   icon: LucideIcon;
   color?: StatCardColor;
-  description?: string;
+  descriptionKey?: string;
 }
 
 /**
@@ -40,31 +40,31 @@ export const statCardColorStyles: Record<StatCardColor, string> = {
  */
 export const dashboardStatsConfig: DashboardStatCard[] = [
   {
-    title: "Total Users",
+    titleKey: "dashboard.stats.totalUsers",
     value: 156,
     icon: Users,
     color: "blue",
-    description: "Active users in the system",
+    descriptionKey: "dashboard.stats.totalUsersDesc",
   },
   {
-    title: "Total Roles",
-    value: 8,
-    icon: Shield,
-    color: "purple",
-    description: "Defined roles in the system",
-  },
-  {
-    title: "Total Roles",
-    value: 8,
-    icon: Shield,
-    color: "purple",
-    description: "Defined roles in the system",
-  },
-  {
-    title: "Total Users",
-    value: 156,
+    titleKey: "dashboard.stats.activeUsers",
+    value: 142,
     icon: Users,
-    color: "blue",
-    description: "Active users in the system",
+    color: "green",
+    descriptionKey: "dashboard.stats.activeUsersDesc",
+  },
+  {
+    titleKey: "dashboard.stats.totalRoles",
+    value: 8,
+    icon: Shield,
+    color: "purple",
+    descriptionKey: "dashboard.stats.totalRolesDesc",
+  },
+  {
+    titleKey: "dashboard.stats.permissions",
+    value: 24,
+    icon: Shield,
+    color: "orange",
+    descriptionKey: "dashboard.stats.permissionsDesc",
   },
 ];

@@ -1,0 +1,133 @@
+{
+  "common": {
+    "loading": "Memuat...",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "view": "Lihat",
+    "add": "Tambah",
+    "search": "Cari",
+    "filter": "Filter",
+    "actions": "Aksi",
+    "status": "Status",
+    "active": "Aktif",
+    "inactive": "Tidak Aktif",
+    "all": "Semua",
+    "noResults": "Tidak ada hasil ditemukan"
+  },
+  "user": {
+    "label": "pengguna",
+    "pageTitle": "Kelola Pengguna",
+    "description": "Kelola akun pengguna dan izin mereka",
+    "filterDescription": "Cari dan filter pengguna",
+    "searchPlaceholder": "Cari pengguna...",
+    "add": {
+      "title": "Tambah Pengguna Baru",
+      "description": "Isi informasi di bawah untuk membuat akun pengguna baru."
+    },
+    "edit": {
+      "title": "Edit Pengguna",
+      "description": "Perbarui informasi pengguna di bawah."
+    },
+    "view": {
+      "title": "Detail Pengguna",
+      "description": "Lihat informasi akun pengguna."
+    },
+    "delete": {
+      "title": "Hapus Pengguna",
+      "description": "Apakah Anda yakin ingin menghapus pengguna ini? Tindakan ini tidak dapat dibatalkan.",
+      "confirmButton": "Hapus Pengguna"
+    },
+    "fields": {
+      "name": "Nama",
+      "email": "Email",
+      "role": "Peran",
+      "status": "Status"
+    },
+    "pagination": {
+      "showing": "Menampilkan {start} hingga {end} dari {total} entri",
+      "rows": "Baris"
+    },
+    "form": {
+      "name": {
+        "label": "Nama Lengkap",
+        "placeholder": "Masukkan nama lengkap"
+      },
+      "email": {
+        "label": "Alamat Email",
+        "placeholder": "Masukkan alamat email"
+      },
+      "password": {
+        "label": "Kata Sandi",
+        "placeholder": "Masukkan kata sandi",
+        "hintNew": "Kata sandi minimal 6 karakter",
+        "hintEdit": "Kosongkan jika tidak ingin mengubah kata sandi"
+      },
+      "role": {
+        "label": "Peran",
+        "placeholder": "Pilih peran"
+      },
+      "status": {
+        "label": "Status",
+        "placeholder": "Pilih status"
+      },
+      "resetButton": "Reset",
+      "saveButton": "Simpan Perubahan",
+      "savingText": "Menyimpan..."
+    },
+    "table": {
+      "no": "No",
+      "name": "Nama",
+      "email": "Email",
+      "role": "Peran",
+      "status": "Status",
+      "createdAt": "Dibuat Pada",
+      "actions": "Aksi",
+      "noResults": "Tidak ada pengguna ditemukan"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dasbor",
+    "management": "Kelola",
+    "users": "Pengguna",
+    "roles": "Peran & Izin",
+    "settings": "Pengaturan",
+    "systemName": "RBAC Admin",
+    "systemVersion": "v1.0"
+  },
+  "dashboard": {
+    "defaultUser": "Pengguna",
+    "welcome": "Selamat datang di Sistem Admin RBAC",
+    "greeting": {
+      "morning": "Selamat Pagi",
+      "afternoon": "Selamat Siang",
+      "evening": "Selamat Malam"
+    },
+    "stats": {
+      "totalUsers": "Total Pengguna",
+      "totalUsersDesc": "Semua pengguna terdaftar",
+      "activeUsers": "Pengguna Aktif",
+      "activeUsersDesc": "Pengguna yang saat ini aktif",
+      "totalRoles": "Total Peran",
+      "totalRolesDesc": "Peran yang ditentukan dalam sistem",
+      "permissions": "Izin",
+      "permissionsDesc": "Total izin"
+    },
+    "quickActions": {
+      "title": "Aksi Cepat",
+      "manageUsers": "Kelola Pengguna",
+      "manageUsersDesc": "Tambah, edit, atau hapus pengguna",
+      "rolePermissions": "Peran & Izin",
+      "rolePermissionsDesc": "Kelola peran dan izin mereka"
+    },
+    "userDistribution": {
+      "title": "Distribusi Pengguna",
+      "total": "Total: {total} pengguna",
+      "admin": "Admin",
+      "manager": "Manajer",
+      "user": "Pengguna",
+      "guest": "Tamu"
+    }
+  }
+}

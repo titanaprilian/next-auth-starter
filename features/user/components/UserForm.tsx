@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Role } from "../types";
+import { userManagementConfig } from "../config/userManagement";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 
 interface UserFormProps {
   defaultValues?: UserFormData;
@@ -33,8 +35,10 @@ export function UserForm({
   roles = [],
   isLoadingRoles,
 }: UserFormProps) {
+  const t = useTranslations();
   const isEditMode = !!defaultValues?.email;
   const [showPassword, setShowPassword] = useState(false);
+  const formConfig = userManagementConfig.form;
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userFormSchema),
@@ -54,11 +58,11 @@ export function UserForm({
     >
       <div className="space-y-2">
         <Label htmlFor="name" className="text-sm font-medium">
-          Full Name
+          {t(formConfig.name.labelKey)}
         </Label>
         <Input
           id="name"
-          placeholder="Enter full name"
+          placeholder={t(formConfig.name.placeholderKey)}
           className="h-10"
           {...form.register("name")}
           disabled={isLoading}
@@ -72,12 +76,12 @@ export function UserForm({
 
       <div className="space-y-2">
         <Label htmlFor="email" className="text-sm font-medium">
-          Email Address
+          {t(formConfig.email.labelKey)}
         </Label>
         <Input
           id="email"
           type="email"
-          placeholder="Enter email address"
+          placeholder={t(formConfig.email.placeholderKey)}
           className="h-10"
           {...form.register("email")}
           disabled={isLoading}
@@ -91,13 +95,13 @@ export function UserForm({
 
       <div className="space-y-2">
         <Label htmlFor="password" className="text-sm font-medium">
-          Password
+          {t(formConfig.password.labelKey)}
         </Label>
         <div className="relative">
           <Input
             id="password"
             type={showPassword ? "text" : "password"}
-            placeholder="Enter password"
+            placeholder={t(formConfig.password.placeholderKey)}
             className="h-10 pr-10"
             {...form.register("password")}
             disabled={isLoading}
@@ -121,12 +125,12 @@ export function UserForm({
         )}
         {!isEditMode && !form.formState.errors.password && (
           <p className="text-xs text-muted-foreground">
-            Password must be at least 6 characters
+            {t(formConfig.password.hintNewKey)}
           </p>
         )}
         {isEditMode && !form.formState.errors.password && (
           <p className="text-xs text-muted-foreground">
-            Leave blank if you don&apos;t want to change the password
+            {t(formConfig.password.hintEditKey)}
           </p>
         )}
       </div>
@@ -134,7 +138,7 @@ export function UserForm({
       <div className="grid grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="role" className="text-sm font-medium">
-            Role
+            {t(formConfig.role.labelKey)}
           </Label>
           <Select
             value={form.watch("roleId")}
@@ -144,7 +148,7 @@ export function UserForm({
             disabled={isLoading || isLoadingRoles}
           >
             <SelectTrigger className="h-10 w-full">
-              <SelectValue placeholder="Select role" />
+              <SelectValue placeholder={t(formConfig.role.placeholderKey)} />
             </SelectTrigger>
             <SelectContent>
               {roles.map((role) => (
@@ -163,7 +167,7 @@ export function UserForm({
 
         <div className="space-y-2">
           <Label htmlFor="status" className="text-sm font-medium">
-            Status
+            {t(formConfig.status.labelKey)}
           </Label>
           <Select
             value={form.watch("status")}
@@ -173,19 +177,19 @@ export function UserForm({
             disabled={isLoading}
           >
             <SelectTrigger className="h-10 w-full">
-              <SelectValue placeholder="Select status" />
+              <SelectValue placeholder={t(formConfig.status.placeholderKey)} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="active">
                 <div className="flex items-center gap-2">
                   <Circle className="h-2.5 w-2.5 fill-green-500 text-green-500" />
-                  Active
+                  {t("common.active")}
                 </div>
               </SelectItem>
               <SelectItem value="inactive">
                 <div className="flex items-center gap-2">
                   <Circle className="h-2.5 w-2.5 fill-red-500 text-red-500" />
-                  Inactive
+                  {t("common.inactive")}
                 </div>
               </SelectItem>
             </SelectContent>
@@ -205,16 +209,16 @@ export function UserForm({
           onClick={() => form.reset()}
           disabled={isLoading}
         >
-          Reset
+          {t(formConfig.resetButton)}
         </Button>
         <Button type="submit" disabled={isLoading} className="bg-branding-dark">
           {isLoading ? (
             <>
               <Spinner className="mr-2 h-4 w-4" />
-              Saving...
+              {t(formConfig.savingText)}
             </>
           ) : (
-            "Save Changes"
+            t(formConfig.saveButton)
           )}
         </Button>
       </div>

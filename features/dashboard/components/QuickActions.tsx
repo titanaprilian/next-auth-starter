@@ -3,11 +3,13 @@ import { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { quickActionsConfig, QuickAction } from "@features/dashboard/config/quickActions";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 
 /**
  * Renders a single quick action row.
  */
 const ActionRow = ({ action }: { action: QuickAction }) => {
+  const t = useTranslations();
   const Icon = action.icon;
 
   return (
@@ -16,8 +18,8 @@ const ActionRow = ({ action }: { action: QuickAction }) => {
         <Icon className="h-5 w-5 text-branding-dark" />
       </div>
       <div className="flex-1">
-        <p className="font-semibold">{action.title}</p>
-        <p className="text-sm text-muted-foreground">{action.description}</p>
+        <p className="font-semibold">{t(action.titleKey)}</p>
+        <p className="text-sm text-muted-foreground">{t(action.descriptionKey)}</p>
       </div>
       <Button asChild variant="outline" size="sm">
         <Link href={action.href}>Go</Link>
@@ -34,10 +36,12 @@ const ActionRow = ({ action }: { action: QuickAction }) => {
  * <QuickActions />
  */
 export function QuickActions() {
+  const t = useTranslations();
+
   return (
     <Card className="bg-white h-full transition-all hover:shadow-md">
       <CardHeader>
-        <CardTitle>Quick Actions</CardTitle>
+        <CardTitle>{t("dashboard.quickActions.title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         {quickActionsConfig.map((action, index) => (

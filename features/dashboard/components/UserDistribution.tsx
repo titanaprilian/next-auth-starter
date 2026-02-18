@@ -3,25 +3,28 @@ import {
   userDistributionConfig,
   getTotalUsers,
 } from "@features/dashboard/config/userDistribution";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 
 /**
  * Renders a single distribution bar.
  */
 const DistributionBar = ({
-  role,
+  roleKey,
   count,
   color,
   percentage,
 }: {
-  role: string;
+  roleKey: string;
   count: number;
   color: string;
   percentage: number;
 }) => {
+  const t = useTranslations();
+
   return (
     <div className="space-y-2">
       <div className="flex justify-between text-sm">
-        <span className="font-medium">{role}</span>
+        <span className="font-medium">{t(roleKey)}</span>
         <span className="text-muted-foreground">
           {count} ({percentage.toFixed(1)}%)
         </span>
@@ -47,20 +50,23 @@ const DistributionBar = ({
  * <UserDistribution />
  */
 export function UserDistribution() {
+  const t = useTranslations();
   const total = getTotalUsers();
 
   return (
     <Card className="bg-white h-full transition-all hover:shadow-md">
       <CardHeader>
-        <CardTitle>User Distribution</CardTitle>
+        <CardTitle>{t("dashboard.userDistribution.title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">Total: {total} users</p>
+        <p className="text-sm text-muted-foreground">
+          {t("dashboard.userDistribution.total", { total })}
+        </p>
         <div className="space-y-4">
           {userDistributionConfig.map((item) => (
             <DistributionBar
-              key={item.role}
-              role={item.role}
+              key={item.roleKey}
+              roleKey={item.roleKey}
               count={item.count}
               color={item.color || "#3b82f6"}
               percentage={total > 0 ? (item.count / total) * 100 : 0}

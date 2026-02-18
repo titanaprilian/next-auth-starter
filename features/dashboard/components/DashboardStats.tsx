@@ -4,6 +4,7 @@ import {
   DashboardStatCard,
   statCardColorStyles,
 } from "@features/dashboard/config/dashboardStats";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 
 /**
  * Default color when none specified.
@@ -14,6 +15,7 @@ const DEFAULT_COLOR = "blue";
  * Renders a single stat card.
  */
 const StatCard = ({ card }: { card: DashboardStatCard }) => {
+  const t = useTranslations();
   const Icon = card.icon;
   const colorClass =
     statCardColorStyles[card.color || DEFAULT_COLOR] ||
@@ -29,11 +31,11 @@ const StatCard = ({ card }: { card: DashboardStatCard }) => {
         </div>
         <div>
           <p className="text-sm font-medium text-muted-foreground">
-            {card.title}
+            {t(card.titleKey)}
           </p>
           <p className="text-2xl font-bold">{card.value}</p>
-          {card.description && (
-            <p className="text-xs text-muted-foreground">{card.description}</p>
+          {card.descriptionKey && (
+            <p className="text-xs text-muted-foreground">{t(card.descriptionKey)}</p>
           )}
         </div>
       </CardContent>

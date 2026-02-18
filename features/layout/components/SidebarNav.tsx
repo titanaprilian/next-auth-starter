@@ -10,6 +10,7 @@ import {
   sidebarConfig,
   sidebarFooterConfig,
 } from "@features/layout/config/sidebar";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 
 /**
  * Collapsible nav item with smooth animation.
@@ -23,6 +24,7 @@ const NavItem = ({
   depth?: number;
   onNavigate?: () => void;
 }) => {
+  const t = useTranslations();
   const pathname = usePathname();
   const [isExpanded, setIsExpanded] = React.useState(false);
 
@@ -55,7 +57,7 @@ const NavItem = ({
         >
           <div className="flex items-center gap-3">
             <Icon className="h-4 w-4" />
-            <span>{item.label}</span>
+            <span>{t(item.labelKey)}</span>
           </div>
           <ChevronDown
             className={cn(
@@ -97,7 +99,7 @@ const NavItem = ({
       style={{ paddingLeft: `${12 + depth * 12}px` }}
     >
       <Icon className="h-4 w-4" />
-      <span>{item.label}</span>
+      <span>{t(item.labelKey)}</span>
     </Link>
   );
 };
@@ -114,6 +116,7 @@ const NavItem = ({
  * <SidebarNav />
  */
 export function SidebarNav({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
+  const t = useTranslations();
   const handleNavigate = () => {
     if (onClose) {
       onClose();
@@ -139,23 +142,23 @@ export function SidebarNav({ isOpen, onClose }: { isOpen?: boolean; onClose?: ()
       >
         {/* Logo / Brand */}
         <div className="flex h-16 items-center border-b border-white/10 px-6">
-          <h1 className="text-xl font-bold">RBAC Admin</h1>
+          <h1 className="text-xl font-bold">{t(sidebarFooterConfig.nameKey)}</h1>
         </div>
 
         {/* Navigation Items */}
         <nav className="flex-1 space-y-1 overflow-y-auto p-4">
           {sidebarConfig.map((item) => (
-            <NavItem key={item.label} item={item} onNavigate={handleNavigate} />
+            <NavItem key={item.labelKey} item={item} onNavigate={handleNavigate} />
           ))}
         </nav>
 
         {/* System Info Footer */}
         <div className="border-t border-white/10 px-6 py-4">
           <p className="text-sm font-medium text-white/80">
-            {sidebarFooterConfig.name}
+            {t(sidebarFooterConfig.nameKey)}
           </p>
-          {sidebarFooterConfig.version && (
-            <p className="text-xs text-white/50">{sidebarFooterConfig.version}</p>
+          {sidebarFooterConfig.versionKey && (
+            <p className="text-xs text-white/50">{t(sidebarFooterConfig.versionKey)}</p>
           )}
         </div>
       </aside>

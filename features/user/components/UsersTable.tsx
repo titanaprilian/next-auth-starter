@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 import {
   Eye,
   Pencil,
@@ -31,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { User } from "../types";
+import { userManagementConfig } from "../config/userManagement";
 
 export interface UsersTableProps {
   data: User[];
@@ -129,7 +131,9 @@ export function UsersTable({
   onEdit,
   onDelete,
 }: UsersTableProps) {
+  const t = useTranslations();
   const [viewingId, setViewingId] = useState<string | null>(null);
+  const tableConfig = userManagementConfig.table;
 
   const totalPages = Math.ceil(total / limit);
   const pageNumbers = getPageNumbers(page, totalPages);
@@ -149,13 +153,27 @@ export function UsersTable({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[50px] px-4">No</TableHead>
-                <TableHead className="w-[20%] px-4">Name</TableHead>
-                <TableHead className="w-[25%] px-4">Email</TableHead>
-                <TableHead className="w-[15%] px-4">Role</TableHead>
-                <TableHead className="w-[15%] px-4">Status</TableHead>
-                <TableHead className="w-[15%] px-4">Created At</TableHead>
-                <TableHead className="w-[10%] px-4">Actions</TableHead>
+                <TableHead className="w-[50px] px-4">
+                  {t(tableConfig.no)}
+                </TableHead>
+                <TableHead className="w-[20%] px-4">
+                  {t(tableConfig.name)}
+                </TableHead>
+                <TableHead className="w-[25%] px-4">
+                  {t(tableConfig.email)}
+                </TableHead>
+                <TableHead className="w-[15%] px-4">
+                  {t(tableConfig.role)}
+                </TableHead>
+                <TableHead className="w-[15%] px-4">
+                  {t(tableConfig.status)}
+                </TableHead>
+                <TableHead className="w-[15%] px-4">
+                  {t(tableConfig.createdAt)}
+                </TableHead>
+                <TableHead className="w-[10%] px-4">
+                  {t(tableConfig.actions)}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -167,7 +185,7 @@ export function UsersTable({
                     colSpan={7}
                     className="h-24 text-center text-muted-foreground"
                   >
-                    No users found
+                    {t(tableConfig.noResults)}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -199,7 +217,9 @@ export function UsersTable({
                             user.isActive ? "text-green-700" : "text-red-700"
                           }
                         >
-                          {user.isActive ? "Active" : "Inactive"}
+                          {user.isActive
+                            ? t("common.active")
+                            : t("common.inactive")}
                         </span>
                       </div>
                     </TableCell>
@@ -247,8 +267,11 @@ export function UsersTable({
         <div className="flex items-center justify-between border-t px-6 py-4">
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              Showing {(page - 1) * limit + 1} to{" "}
-              {Math.min(page * limit, total)} of {total} entries
+              {t(userManagementConfig.pagination.showingKey, {
+                start: (page - 1) * limit + 1,
+                end: Math.min(page * limit, total),
+                total,
+              })}
             </span>
           </div>
 
@@ -315,7 +338,7 @@ export function UsersTable({
             </div>
 
             <div className="flex items-center gap-2 ml-4">
-              <span className="text-sm text-muted-foreground">Rows:</span>
+              <span className="text-sm text-muted-foreground">{t(userManagementConfig.pagination.rowsKey)}:</span>
               <Select
                 value={String(limit)}
                 onValueChange={(value) => onLimitChange(Number(value))}

@@ -4,8 +4,8 @@ import { LucideIcon, Users, Shield } from "lucide-react";
  * Quick action configuration.
  */
 export interface QuickAction {
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   href: string;
   icon: LucideIcon;
 }
@@ -16,14 +16,14 @@ export interface QuickAction {
  */
 export const quickActionsConfig: QuickAction[] = [
   {
-    title: "Manage Users",
-    description: "Add, edit, or remove users from the system",
+    titleKey: "dashboard.quickActions.manageUsers",
+    descriptionKey: "dashboard.quickActions.manageUsersDesc",
     href: "/management/users",
     icon: Users,
   },
   {
-    title: "Role & Permissions",
-    description: "Manage roles and their permissions",
+    titleKey: "dashboard.quickActions.rolePermissions",
+    descriptionKey: "dashboard.quickActions.rolePermissionsDesc",
     href: "/management/roles",
     icon: Shield,
   },

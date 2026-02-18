@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/useTranslation";
 import { AlertTriangle } from "lucide-react";
 import {
   Dialog,
@@ -12,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { User } from "../types";
+import { userManagementConfig } from "../config/userManagement";
 
 interface DeleteUserDialogProps {
   user: User | null;
@@ -28,6 +30,9 @@ export function DeleteUserDialog({
   onClose,
   onConfirm,
 }: DeleteUserDialogProps) {
+  const t = useTranslations();
+  const deleteConfig = userManagementConfig.delete;
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[400px]">
@@ -38,10 +43,11 @@ export function DeleteUserDialog({
             </div>
           </div>
           <div className="text-center">
-            <DialogTitle className="text-lg">Delete User</DialogTitle>
+            <DialogTitle className="text-lg">
+              {t(deleteConfig.titleKey)}
+            </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground">
-              Are you sure you want to delete this user? This action cannot be
-              undone.
+              {t(deleteConfig.descriptionKey)}
             </DialogDescription>
           </div>
         </DialogHeader>
@@ -55,7 +61,7 @@ export function DeleteUserDialog({
 
         <DialogFooter className="gap-2">
           <Button variant="outline" onClick={onClose} disabled={isLoading}>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             variant="destructive"
@@ -66,10 +72,10 @@ export function DeleteUserDialog({
             {isLoading ? (
               <>
                 <Spinner className="mr-2 h-4 w-4" />
-                Deleting...
+                {t("common.loading")}
               </>
             ) : (
-              "Delete User"
+              t(deleteConfig.confirmButtonKey)
             )}
           </Button>
         </DialogFooter>

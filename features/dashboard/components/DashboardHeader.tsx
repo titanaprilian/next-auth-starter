@@ -3,27 +3,16 @@
 import React from "react";
 import { useAuth } from "@features/auth/context/AuthProvider";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslations, useLocale } from "@/lib/i18n/useTranslation";
 
 /**
- * Gets greeting with emoji based on current time of day.
+ * Gets greeting key and emoji based on current time of day.
  */
-const getGreeting = (): { text: string; emoji: string } => {
+const getGreeting = (): { key: string; emoji: string } => {
   const hour = new Date().getHours();
-  if (hour < 12) return { text: "Good Morning", emoji: "🌅" };
-  if (hour < 17) return { text: "Good Afternoon", emoji: "☀️" };
-  return { text: "Good Evening", emoji: "🌙" };
-};
-
-/**
- * Formats the current date.
- */
-const formatDate = (): string => {
-  return new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  if (hour < 12) return { key: "dashboard.greeting.morning", emoji: "🌅" };
+  if (hour < 17) return { key: "dashboard.greeting.afternoon", emoji: "☀️" };
+  return { key: "dashboard.greeting.evening", emoji: "🌙" };
 };
 
 /**
@@ -34,6 +23,8 @@ const formatDate = (): string => {
  * <DashboardHeader />
  */
 export function DashboardHeader() {
+  const t = useTranslations();
+  const locale = useLocale();
   const { user } = useAuth();
   const [time, setTime] = React.useState(new Date());
 
@@ -53,18 +44,17 @@ export function DashboardHeader() {
         {/* Greeting Section */}
         <div className="text-center">
           <h1 className="text-lg font-bold sm:text-2xl">
-            {greeting.emoji} {greeting.text},{" "}
-            {user?.name?.split(" ")[0] || "User"}!
+            {greeting.emoji} {t(greeting.key)}, {user?.name?.split(" ")[0] || t("dashboard.defaultUser")}!
           </h1>
           <p className="mt-1 text-sm text-muted-foreground text-center sm:text-base">
-            Welcome to the RBAC Admin System
+            {t("dashboard.welcome")}
           </p>
         </div>
 
         {/* Clock & Date Section */}
         <div className="text-center sm:text-right">
           <p className="text-base font-semibold sm:text-lg">
-            {time.toLocaleTimeString("en-US", {
+            {time.toLocaleTimeString(locale, {
               hour: "2-digit",
               minute: "2-digit",
               second: "2-digit",
@@ -72,7 +62,12 @@ export function DashboardHeader() {
             })}
           </p>
           <p className="text-xs text-muted-foreground sm:text-sm">
-            {formatDate()}
+            {time.toLocaleDateString(locale, {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </p>
         </div>
       </CardContent>

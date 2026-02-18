@@ -2,29 +2,29 @@ import { LucideIcon, LayoutDashboard, Users, Shield } from "lucide-react";
 
 /**
  * Sidebar navigation item configuration.
- * 
- * @property label - Display label for the menu item
+ *
+ * @property labelKey - Translation key for the menu item
  * @property icon - Lucide icon component
  * @property href - Route path (for single items)
  * @property children - Sub-menu items (for collapsible menus)
- * 
+ *
  * @example
  * // Single menu item
- * { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" }
- * 
+ * { labelKey: "navigation.dashboard", icon: LayoutDashboard, href: "/dashboard" }
+ *
  * @example
  * // Collapsible menu with children
- * { 
- *   label: "Management", 
- *   icon: Users, 
+ * {
+ *   labelKey: "navigation.management",
+ *   icon: Users,
  *   children: [
- *     { label: "User Management", icon: Users, href: "/management/users" },
- *     { label: "Role & Permissions", icon: Shield, href: "/management/roles" }
+ *     { labelKey: "navigation.users", icon: Users, href: "/management/users" },
+ *     { labelKey: "navigation.roles", icon: Shield, href: "/management/roles" }
  *   ]
  * }
  */
 export interface SidebarNavItem {
-  label: string;
+  labelKey: string;
   icon: LucideIcon;
   href?: string;
   children?: SidebarNavItem[];
@@ -34,8 +34,8 @@ export interface SidebarNavItem {
  * System information displayed at the bottom of the sidebar.
  */
 export interface SidebarFooter {
-  name: string;
-  version?: string;
+  nameKey: string;
+  versionKey?: string;
 }
 
 /**
@@ -43,21 +43,21 @@ export interface SidebarFooter {
  */
 export const sidebarConfig: SidebarNavItem[] = [
   {
-    label: "Dashboard",
+    labelKey: "navigation.dashboard",
     icon: LayoutDashboard,
     href: "/dashboard",
   },
   {
-    label: "Management",
+    labelKey: "navigation.management",
     icon: Users,
     children: [
       {
-        label: "User Management",
+        labelKey: "navigation.users",
         icon: Users,
         href: "/management/users",
       },
       {
-        label: "Role & Permissions",
+        labelKey: "navigation.roles",
         icon: Shield,
         href: "/management/roles",
       },
@@ -70,6 +70,6 @@ export const sidebarConfig: SidebarNavItem[] = [
  * Edit here to change the system name and version.
  */
 export const sidebarFooterConfig: SidebarFooter = {
-  name: "RBAC Admin",
-  version: "v1.0",
+  nameKey: "navigation.systemName",
+  versionKey: "navigation.systemVersion",
 };

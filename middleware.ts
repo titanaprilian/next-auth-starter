@@ -20,19 +20,16 @@ export function middleware(request: NextRequest) {
   const publicPaths = ["/login", "/register"];
   const isPublicPath = publicPaths.includes(pathname);
 
-  // Special case: force logout clears the refresh_token cookie and redirects to login
   if (forceLogout) {
     const response = NextResponse.redirect(new URL("/login", request.url));
     response.cookies.set("refresh_token", "", { maxAge: 0 });
     return response;
   }
 
-  // Redirect authenticated users away from public pages to dashboard
   if (isPublicPath && isAuthenticated) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  // Redirect unauthenticated users to login
   if (!isPublicPath && !isAuthenticated) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -41,5 +38,11 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/register", "/dashboard/:path*"],
+  matcher: [
+    "/",
+    "/login",
+    "/register",
+    "/dashboard/:path*",
+    "/management/:path*",
+  ],
 };
