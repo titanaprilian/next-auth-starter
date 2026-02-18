@@ -173,6 +173,62 @@ pnpm lint        # Run ESLint
 
 ### Adding API Endpoints
 
-1. Create API service function in `features/[feature]/services/`
-2. Add React Query hook in `features/[feature]/hooks/`
-3. Use in components with proper loading states
+When adding a new API endpoint, follow this pattern:
+
+1. **Update API endpoints config** - Add the backend URL to `app/api/api.ts`:
+```typescript
+// app/api/api.ts
+export const API_ENDPOINTS = {
+  FEATURE: {
+    LIST: `${API_URL}/feature`,
+    GET_BY_ID: (id: string) => `${API_URL}/feature/${id}`,
+    CREATE: `${API_URL}/feature`,
+    UPDATE: (id: string) => `${API_URL}/feature/${id}`,
+    DELETE: (id: string) => `${API_URL}/feature/${id}`,
+  },
+};
+```
+
+2. **Create Next.js API route** - Create `app/api/{featureName}/route.ts` to proxy requests to backend:
+```typescript
+// app/api/users/route.ts
+import { NextResponse } from "next/server";
+import { ApiAxios } from "@utils/axios";
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  // ... handle params
+  const { data } = await ApiAxios.get(API_ENDPOINTS.USERS.LIST, { params });
+  return NextResponse.json(data);
+}
+```
+
+3. **Create service function** - In `features/{feature}/services/`:
+```typescript
+// features/user/services/userApi.ts
+import { ApiAxios } from "@utils/axios";
+
+export async function fetchUsers(filters) {
+  const { data } = await ApiAxios.get<ApiUsersResponse>("/users", { params });
+  return data;
+}
+
+export async function fetchUserById(id: string) {
+  const { data } = await ApiAxios.get<ApiUserResponse>(`/users/${id}`);
+  return data.data;
+}
+```
+
+4. **Add React Query hook** - In `features/{feature}/hooks/`:
+```typescript
+// features/user/hooks/useUser.ts
+export function useFetchUserById(id: string | null) {
+  return useQuery({
+    queryKey: userKeys.detail(id || ""),
+    queryFn: () => fetchUserById(id!),
+    enabled: !!id,
+  });
+}
+```
+
+5. **Use in components** - With proper loading states and skeleton
