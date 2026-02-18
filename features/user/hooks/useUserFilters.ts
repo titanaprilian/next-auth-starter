@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 100;
+const DEFAULT_LIMIT = 5;
 const DEBOUNCE_DELAY = 500;
 
 export function useUserFilters() {

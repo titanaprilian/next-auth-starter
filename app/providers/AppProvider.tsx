@@ -3,6 +3,7 @@
 import { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/features/auth";
+import { I18nProvider } from "./I18nProvider";
 
 /**
  * AppProviders component that wraps the application with necessary context providers.
@@ -35,7 +36,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>{children}</AuthProvider>
+      <AuthProvider>
+        <I18nProvider>{children}</I18nProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
