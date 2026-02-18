@@ -36,17 +36,17 @@ export function UserDialog({
   const { data: rolesData, isLoading: rolesLoading } = useFetchRole();
   
   const { data: userData, isLoading: userLoading } = useFetchUserById(
-    mode === "view" && selectedUser ? selectedUser.id : null
+    (mode === "view" || mode === "edit") && selectedUser ? selectedUser.id : null
   );
 
-  const user = mode === "view" ? userData : selectedUser;
+  const user = (mode === "view" || mode === "edit") && userData ? userData : selectedUser;
 
-  const defaultValues: UserFormData | undefined = selectedUser
+  const defaultValues: UserFormData | undefined = user
     ? {
-        name: selectedUser.name,
-        email: selectedUser.email,
-        roleId: selectedUser.roleId as UserFormData["roleId"],
-        status: selectedUser.isActive ? "active" : "inactive",
+        name: user.name,
+        email: user.email,
+        roleId: user.roleId as UserFormData["roleId"],
+        status: user.isActive ? "active" : "inactive",
       }
     : undefined;
 
@@ -54,6 +54,7 @@ export function UserDialog({
   const Icon = dialogConfig.icon;
 
   const isViewLoading = mode === "view" && userLoading;
+  const isEditLoading = mode === "edit" && userLoading;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -84,7 +85,7 @@ export function UserDialog({
           <UserForm
             defaultValues={defaultValues}
             onSubmit={onSubmit}
-            isLoading={isLoading}
+            isLoading={isLoading || isEditLoading}
             roles={rolesData?.data}
             isLoadingRoles={rolesLoading}
           />
