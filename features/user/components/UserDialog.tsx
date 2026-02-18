@@ -39,22 +39,30 @@ export function UserDialog({
     (mode === "view" || mode === "edit") && selectedUser ? selectedUser.id : null
   );
 
-  const user = (mode === "view" || mode === "edit") && userData ? userData : selectedUser;
-
-  const defaultValues: UserFormData | undefined = user
-    ? {
-        name: user.name,
-        email: user.email,
-        roleId: user.roleId as UserFormData["roleId"],
-        status: user.isActive ? "active" : "inactive",
-      }
-    : undefined;
-
   const dialogConfig = userManagementConfig.dialog[mode];
   const Icon = dialogConfig.icon;
 
   const isViewLoading = mode === "view" && userLoading;
   const isEditLoading = mode === "edit" && userLoading;
+  const isFormLoading = isLoading || isEditLoading;
+
+  const defaultValues: UserFormData | undefined = userData
+    ? {
+        name: userData.name,
+        email: userData.email,
+        roleId: userData.roleId as UserFormData["roleId"],
+        status: userData.isActive ? "active" : "inactive",
+      }
+    : mode === "edit" && userLoading
+    ? undefined
+    : selectedUser
+    ? {
+        name: selectedUser.name,
+        email: selectedUser.email,
+        roleId: selectedUser.roleId as UserFormData["roleId"],
+        status: selectedUser.isActive ? "active" : "inactive",
+      }
+    : undefined;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -77,7 +85,7 @@ export function UserDialog({
 
         {mode === "view" ? (
           <UserView 
-            user={user} 
+            user={userData || selectedUser} 
             roles={rolesData?.data} 
             isLoading={isViewLoading} 
           />
@@ -85,7 +93,7 @@ export function UserDialog({
           <UserForm
             defaultValues={defaultValues}
             onSubmit={onSubmit}
-            isLoading={isLoading || isEditLoading}
+            isLoading={isFormLoading}
             roles={rolesData?.data}
             isLoadingRoles={rolesLoading}
           />
