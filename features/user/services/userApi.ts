@@ -24,6 +24,11 @@ export async function fetchUsers(
   };
 }
 
+export async function fetchUserById(id: string): Promise<User> {
+  const { data } = await ApiAxios.get<ApiUserResponse>(`/users/${id}`);
+  return data.data;
+}
+
 export async function deleteUser(id: string): Promise<DeleteResponse> {
   const { data } = await ApiAxios.delete<ApiDeleteResponse>(`/users/${id}`);
 

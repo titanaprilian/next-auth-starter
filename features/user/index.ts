@@ -3,6 +3,7 @@ export { UserManagementHeader } from "./components/UserManagementHeader";
 export { UserFilters } from "./components/UserFilters";
 export { UserForm } from "./components/UserForm";
 export { UserDialog } from "./components/UserDialog";
+export { UserView } from "./components/UserView";
 export { DeleteUserDialog } from "./components/DeleteUserDialog";
 
 export { useUserManagement } from "./hooks/useUserManagement";

@@ -6,6 +6,7 @@ import {
   deleteUser,
   fetchRoles,
   fetchUsers,
+  fetchUserById,
   updateUser,
 } from "../services/userApi";
 import { UserFormData } from "../schema/userFormSchema";
@@ -20,6 +21,8 @@ export const userKeys = {
   lists: () => [...userKeys.all, "list"] as const,
   list: (filters: Partial<UserFilters>) =>
     [...userKeys.lists(), filters] as const,
+  details: () => [...userKeys.all, "detail"] as const,
+  detail: (id: string) => [...userKeys.details(), id] as const,
 };
 
 /**
@@ -135,5 +138,22 @@ export function useFetchRole() {
   return useQuery<ApiRolesResponse>({
     queryKey: roleKeys.list(),
     queryFn: fetchRoles,
+  });
+}
+
+/**
+ * Custom hook to fetch a user by ID.
+ *
+ * @param id - User ID to fetch
+ * @returns Query result object containing user data, loading state, and error
+ *
+ * @example
+ * const { data, isLoading, error } = useFetchUserById("123");
+ */
+export function useFetchUserById(id: string | null) {
+  return useQuery<User>({
+    queryKey: userKeys.detail(id || ""),
+    queryFn: () => fetchUserById(id!),
+    enabled: !!id,
   });
 }

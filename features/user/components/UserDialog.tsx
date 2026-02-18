@@ -12,7 +12,7 @@ import { UserForm } from "./UserForm";
 import { UserView } from "./UserView";
 import { User, UserDialogMode } from "../types";
 import { UserFormData } from "../schema/userFormSchema";
-import { useFetchRole } from "../hooks/useUser";
+import { useFetchRole, useFetchUserById } from "../hooks/useUser";
 import { userManagementConfig } from "../config/userManagement";
 
 interface UserDialogProps {
@@ -34,6 +34,12 @@ export function UserDialog({
 }: UserDialogProps) {
   const t = useTranslations();
   const { data: rolesData, isLoading: rolesLoading } = useFetchRole();
+  
+  const { data: userData, isLoading: userLoading } = useFetchUserById(
+    mode === "view" && selectedUser ? selectedUser.id : null
+  );
+
+  const user = mode === "view" ? userData : selectedUser;
 
   const defaultValues: UserFormData | undefined = selectedUser
     ? {
@@ -46,6 +52,8 @@ export function UserDialog({
 
   const dialogConfig = userManagementConfig.dialog[mode];
   const Icon = dialogConfig.icon;
+
+  const isViewLoading = mode === "view" && userLoading;
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -66,8 +74,12 @@ export function UserDialog({
           </div>
         </DialogHeader>
 
-        {mode === "view" && selectedUser ? (
-          <UserView user={selectedUser} roles={rolesData?.data} />
+        {mode === "view" ? (
+          <UserView 
+            user={user} 
+            roles={rolesData?.data} 
+            isLoading={isViewLoading} 
+          />
         ) : (
           <UserForm
             defaultValues={defaultValues}

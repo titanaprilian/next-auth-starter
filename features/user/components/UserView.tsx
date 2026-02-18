@@ -4,14 +4,25 @@ import { useTranslations } from "@/lib/i18n/useTranslation";
 import { Circle } from "lucide-react";
 import { User as UserType, Role } from "../types";
 import { userManagementConfig } from "../config/userManagement";
+import { UserViewSkeleton } from "./UserViewSkeleton";
 
 interface UserViewProps {
-  user: UserType;
+  user: UserType | null | undefined;
   roles?: Role[];
+  isLoading?: boolean;
 }
 
-export function UserView({ user, roles }: UserViewProps) {
+export function UserView({ user, roles, isLoading }: UserViewProps) {
   const t = useTranslations();
+
+  if (isLoading) {
+    return <UserViewSkeleton />;
+  }
+
+  if (!user) {
+    return null;
+  }
+
   const roleName = roles?.find((r) => r.id === user.roleId)?.name || user.roleId;
 
   const fields = userManagementConfig.viewFields.map((field) => {
