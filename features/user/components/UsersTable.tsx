@@ -45,6 +45,12 @@ export interface UsersTableProps {
   onView: (user: User) => void;
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
+  permissions?: {
+    canCreate?: boolean;
+    canRead?: boolean;
+    canUpdate?: boolean;
+    canDelete?: boolean;
+  };
 }
 
 const TableSkeleton = () => (
@@ -130,10 +136,17 @@ export function UsersTable({
   onView,
   onEdit,
   onDelete,
+  permissions,
 }: UsersTableProps) {
   const t = useTranslations();
   const [viewingId, setViewingId] = useState<string | null>(null);
   const tableConfig = userManagementConfig.table;
+
+  // Default to true if permissions not provided (backward compatibility)
+  const canView = permissions?.canRead ?? true;
+  const canEdit = permissions?.canUpdate ?? true;
+  const canDelete = permissions?.canDelete ?? true;
+  const showActions = canView || canEdit || canDelete;
 
   const totalPages = Math.ceil(total / limit);
   const pageNumbers = getPageNumbers(page, totalPages);
@@ -171,9 +184,11 @@ export function UsersTable({
                 <TableHead className="w-[15%] px-4">
                   {t(tableConfig.createdAt)}
                 </TableHead>
-                <TableHead className="w-[10%] px-4">
-                  {t(tableConfig.actions)}
-                </TableHead>
+                {showActions && (
+                  <TableHead className="w-[10%] px-4">
+                    {t(tableConfig.actions)}
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -226,37 +241,45 @@ export function UsersTable({
                     <TableCell className="text-muted-foreground px-4">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </TableCell>
-                    <TableCell className="px-4">
-                      <div className="flex items-center gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 bg-branding-dark hover:bg-branding-dark/90"
-                          onClick={() => handleView(user)}
-                          disabled={viewingId !== null}
-                        >
-                          <Eye className="h-4 w-4 text-white" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 bg-orange-500 hover:bg-orange-600"
-                          onClick={() => onEdit(user)}
-                          disabled={viewingId !== null}
-                        >
-                          <Pencil className="h-4 w-4 text-white" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 bg-destructive hover:bg-destructive/90"
-                          onClick={() => onDelete(user)}
-                          disabled={viewingId !== null}
-                        >
-                          <Trash2 className="h-4 w-4 text-white" />
-                        </Button>
-                      </div>
-                    </TableCell>
+                    {showActions && (
+                      <TableCell className="px-4">
+                        <div className="flex items-center gap-1">
+                          {canView && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 bg-branding-dark hover:bg-branding-dark/90"
+                              onClick={() => handleView(user)}
+                              disabled={viewingId !== null}
+                            >
+                              <Eye className="h-4 w-4 text-white" />
+                            </Button>
+                          )}
+                          {canEdit && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 bg-orange-500 hover:bg-orange-600"
+                              onClick={() => onEdit(user)}
+                              disabled={viewingId !== null}
+                            >
+                              <Pencil className="h-4 w-4 text-white" />
+                            </Button>
+                          )}
+                          {canDelete && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 bg-destructive hover:bg-destructive/90"
+                              onClick={() => onDelete(user)}
+                              disabled={viewingId !== null}
+                            >
+                              <Trash2 className="h-4 w-4 text-white" />
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               )}

@@ -5,7 +5,19 @@ export * from "./hooks/useRoleManagement";
 export * from "./hooks/useRoleDialog";
 export * from "./hooks/useDeleteRoleDialog";
 export * from "./hooks/useRoleFilters";
+export * from "./hooks/useFeaturePermissions";
 export * from "./config/roleManagement";
+
+export {
+  PermissionsProvider,
+  usePermissions,
+  FEATURE_MAPPINGS,
+} from "./context/PermissionsProvider";
+export type {
+  PermissionCheckOptions,
+  FeatureName,
+  FeatureValue,
+} from "./context/PermissionsProvider";
 
 export { roleFormSchema } from "./schema/roleFormSchema";
 export type { RoleFormData, PermissionInput } from "./schema/roleFormSchema";

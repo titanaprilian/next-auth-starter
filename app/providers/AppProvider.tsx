@@ -3,6 +3,7 @@
 import { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/features/auth";
+import { PermissionsProvider } from "@/features/rbac/context/PermissionsProvider";
 import { I18nProvider } from "./I18nProvider";
 
 /**
@@ -11,6 +12,8 @@ import { I18nProvider } from "./I18nProvider";
  * Provides:
  * - React Query client for data fetching
  * - Auth context for authentication state
+ * - Permissions context for RBAC permission checking
+ * - I18n context for translations
  *
  * React Query configuration:
  * - staleTime: 60s - Data is considered fresh for 60 seconds
@@ -37,7 +40,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <I18nProvider>{children}</I18nProvider>
+        <PermissionsProvider>
+          <I18nProvider>{children}</I18nProvider>
+        </PermissionsProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

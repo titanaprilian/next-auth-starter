@@ -11,9 +11,11 @@ import {
   sidebarFooterConfig,
 } from "@features/layout/config/sidebar";
 import { useTranslations } from "@/lib/i18n/useTranslation";
+import { usePermissions } from "@/features/rbac/context/PermissionsProvider";
 
 /**
  * Collapsible nav item with smooth animation.
+ * Filters children based on user permissions.
  */
 const NavItem = ({
   item,
@@ -26,6 +28,7 @@ const NavItem = ({
 }) => {
   const t = useTranslations();
   const pathname = usePathname();
+  const { canRead, isLoading: isLoadingPermissions } = usePermissions();
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const isActive = item.href ? pathname === item.href : false;
@@ -34,6 +37,28 @@ const NavItem = ({
   );
 
   const Icon = item.icon;
+
+  // Filter children based on permissions
+  const visibleChildren = React.useMemo(() => {
+    if (!item.children) return [];
+    return item.children.filter((child) => {
+      // If no feature is specified, show the item
+      if (!child.feature) return true;
+      // Check if user has read permission for this feature
+      return canRead(child.feature);
+    });
+  }, [item.children, canRead]);
+
+  // Don't render if this item requires a permission the user doesn't have
+  if (item.feature && !isLoadingPermissions) {
+    const hasPermission = canRead(item.feature);
+    if (!hasPermission) return null;
+  }
+
+  // Don't render parent if no children are visible
+  if (item.children && visibleChildren.length === 0 && !isLoadingPermissions) {
+    return null;
+  }
 
   const handleClick = () => {
     if (item.children) {
@@ -69,11 +94,11 @@ const NavItem = ({
         <div
           className={cn(
             "overflow-hidden transition-all duration-200 ease-in-out",
-            isExpanded ? "max-h-40 opacity-100" : "max-h-0 opacity-0",
+            isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
           )}
         >
           <div className="space-y-1 pt-1">
-            {item.children.map((child) => (
+            {visibleChildren.map((child) => (
               <NavItem
                 key={child.href}
                 item={child}

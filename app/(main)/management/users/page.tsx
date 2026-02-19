@@ -9,6 +9,7 @@ import {
   UserDialog,
   DeleteUserDialog,
 } from "@/features/user";
+import { useUserPermissions } from "@/features/rbac";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function UsersContent() {
@@ -29,9 +30,14 @@ function UsersContent() {
     deleteUserLoading,
   } = useUserManagement();
 
+  const permissions = useUserPermissions();
+
   return (
     <div className="space-y-6">
-      <UserManagementHeader onAddUser={dialog.openAdd} />
+      <UserManagementHeader
+        onAddUser={dialog.openAdd}
+        canCreate={permissions.canCreate}
+      />
       <UserFilters
         search={filters.search}
         role={filters.role}
@@ -51,6 +57,7 @@ function UsersContent() {
         onView={dialog.openView}
         onEdit={dialog.openEdit}
         onDelete={deleteUser}
+        permissions={permissions}
       />
       <UserDialog
         isOpen={dialog.isOpen}

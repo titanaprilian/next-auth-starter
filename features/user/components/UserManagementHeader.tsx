@@ -5,9 +5,13 @@ import { userManagementConfig } from "../config/userManagement";
 
 interface UserManagementHeaderProps {
   onAddUser?: () => void;
+  canCreate?: boolean;
 }
 
-export function UserManagementHeader({ onAddUser }: UserManagementHeaderProps) {
+export function UserManagementHeader({
+  onAddUser,
+  canCreate = true,
+}: UserManagementHeaderProps) {
   const t = useTranslations();
 
   return (
@@ -25,10 +29,12 @@ export function UserManagementHeader({ onAddUser }: UserManagementHeaderProps) {
           </p>
         </div>
       </div>
-      <Button className="bg-branding-dark" onClick={onAddUser}>
-        <Plus className="mr-2 h-4 w-4" />
-        {t("user.add.title")}
-      </Button>
+      {canCreate && (
+        <Button className="bg-branding-dark" onClick={onAddUser}>
+          <Plus className="mr-2 h-4 w-4" />
+          {t("user.add.title")}
+        </Button>
+      )}
     </div>
   );
 }

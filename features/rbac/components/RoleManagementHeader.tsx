@@ -5,9 +5,13 @@ import { roleManagementConfig } from "../config/roleManagement";
 
 interface RoleManagementHeaderProps {
   onAddRole?: () => void;
+  canCreate?: boolean;
 }
 
-export function RoleManagementHeader({ onAddRole }: RoleManagementHeaderProps) {
+export function RoleManagementHeader({
+  onAddRole,
+  canCreate = true,
+}: RoleManagementHeaderProps) {
   const t = useTranslations();
 
   return (
@@ -25,10 +29,12 @@ export function RoleManagementHeader({ onAddRole }: RoleManagementHeaderProps) {
           </p>
         </div>
       </div>
-      <Button className="bg-branding-dark" onClick={onAddRole}>
-        <Plus className="mr-2 h-4 w-4" />
-        {t("role.add.title")}
-      </Button>
+      {canCreate && (
+        <Button className="bg-branding-dark" onClick={onAddRole}>
+          <Plus className="mr-2 h-4 w-4" />
+          {t("role.add.title")}
+        </Button>
+      )}
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   RolesTable,
   RoleDialog,
   DeleteRoleDialog,
+  useRBACPermissions,
 } from "@/features/rbac";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -27,9 +28,14 @@ function RolesContent() {
     deleteRoleLoading,
   } = useRoleManagement();
 
+  const permissions = useRBACPermissions();
+
   return (
     <div className="space-y-6">
-      <RoleManagementHeader onAddRole={dialog.openAdd} />
+      <RoleManagementHeader
+        onAddRole={dialog.openAdd}
+        canCreate={permissions.canCreate}
+      />
       <RoleFilters
         search={filters.search}
         onSearchChange={filters.setSearch}
@@ -45,6 +51,7 @@ function RolesContent() {
         onView={(role) => dialog.openView(role)}
         onEdit={(role) => dialog.openEdit(role)}
         onDelete={deleteRole}
+        permissions={permissions}
       />
       <RoleDialog
         isOpen={dialog.isOpen}
