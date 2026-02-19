@@ -25,4 +25,7 @@ export const API_ENDPOINTS = {
     ROLES_ME: `${API_URL}/rbac/roles/me`,
     FEATURES: `${API_URL}/rbac/features`,
   },
+  DASHBOARD: {
+    LIST: `${API_URL}/dashboard`,
+  },
 };

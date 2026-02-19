@@ -1,30 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  userDistributionConfig,
-  getTotalUsers,
-} from "@features/dashboard/config/userDistribution";
+import { UserDistributionData } from "../types";
 import { useTranslations } from "@/lib/i18n/useTranslation";
 
-/**
- * Renders a single distribution bar.
- */
+const DEFAULT_COLORS = ["#3b82f6", "#8b5cf6", "#22c55e", "#f59e0b", "#ef4444", "#ec4899"];
+
+interface UserDistributionProps {
+  data?: UserDistributionData[];
+}
+
 const DistributionBar = ({
-  roleKey,
+  roleName,
   count,
   color,
   percentage,
 }: {
-  roleKey: string;
+  roleName: string;
   count: number;
   color: string;
   percentage: number;
 }) => {
-  const t = useTranslations();
-
   return (
     <div className="space-y-2">
       <div className="flex justify-between text-sm">
-        <span className="font-medium">{t(roleKey)}</span>
+        <span className="font-medium">{roleName}</span>
         <span className="text-muted-foreground">
           {count} ({percentage.toFixed(1)}%)
         </span>
@@ -42,16 +40,9 @@ const DistributionBar = ({
   );
 };
 
-/**
- * User distribution component.
- * Displays a bar chart showing user count per role.
- *
- * @example
- * <UserDistribution />
- */
-export function UserDistribution() {
+export function UserDistribution({ data }: UserDistributionProps) {
   const t = useTranslations();
-  const total = getTotalUsers();
+  const total = data?.reduce((sum, item) => sum + item.count, 0) ?? 0;
 
   return (
     <Card className="bg-white h-full transition-all hover:shadow-md">
@@ -63,12 +54,12 @@ export function UserDistribution() {
           {t("dashboard.userDistribution.total", { total })}
         </p>
         <div className="space-y-4">
-          {userDistributionConfig.map((item) => (
+          {data?.map((item, index) => (
             <DistributionBar
-              key={item.roleKey}
-              roleKey={item.roleKey}
+              key={item.roleName}
+              roleName={item.roleName}
               count={item.count}
-              color={item.color || "#3b82f6"}
+              color={DEFAULT_COLORS[index % DEFAULT_COLORS.length]}
               percentage={total > 0 ? (item.count / total) * 100 : 0}
             />
           ))}

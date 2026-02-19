@@ -1,8 +1,5 @@
-import { LucideIcon, Users, Shield } from "lucide-react";
+import { LucideIcon, Users, Shield, UserCog, FileKey } from "lucide-react";
 
-/**
- * Available color options for stat cards.
- */
 export type StatCardColor =
   | "blue"
   | "green"
@@ -11,20 +8,21 @@ export type StatCardColor =
   | "purple"
   | "orange";
 
-/**
- * Dashboard stat card configuration.
- */
-export interface DashboardStatCard {
+export type DashboardStatCard = {
   titleKey: string;
-  value: string | number;
+  value?: number;
   icon: LucideIcon;
   color?: StatCardColor;
   descriptionKey?: string;
-}
+  dataKey: keyof {
+    totalUsers: number;
+    activeUsers: number;
+    inactiveUsers: number;
+    totalRoles: number;
+    totalFeatures: number;
+  };
+};
 
-/**
- * Color utility for stat cards.
- */
 export const statCardColorStyles: Record<StatCardColor, string> = {
   blue: "bg-blue-100 text-blue-600",
   green: "bg-green-100 text-green-600",
@@ -34,36 +32,32 @@ export const statCardColorStyles: Record<StatCardColor, string> = {
   orange: "bg-orange-100 text-orange-600",
 };
 
-/**
- * Dashboard stats cards configuration.
- * Add or remove cards here to update the dashboard stats.
- */
 export const dashboardStatsConfig: DashboardStatCard[] = [
   {
     titleKey: "dashboard.stats.totalUsers",
-    value: 156,
+    dataKey: "totalUsers",
     icon: Users,
     color: "blue",
     descriptionKey: "dashboard.stats.totalUsersDesc",
   },
   {
     titleKey: "dashboard.stats.activeUsers",
-    value: 142,
-    icon: Users,
+    dataKey: "activeUsers",
+    icon: UserCog,
     color: "green",
     descriptionKey: "dashboard.stats.activeUsersDesc",
   },
   {
     titleKey: "dashboard.stats.totalRoles",
-    value: 8,
+    dataKey: "totalRoles",
     icon: Shield,
     color: "purple",
     descriptionKey: "dashboard.stats.totalRolesDesc",
   },
   {
     titleKey: "dashboard.stats.permissions",
-    value: 24,
-    icon: Shield,
+    dataKey: "totalFeatures",
+    icon: FileKey,
     color: "orange",
     descriptionKey: "dashboard.stats.permissionsDesc",
   },

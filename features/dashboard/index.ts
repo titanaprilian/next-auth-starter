@@ -6,3 +6,6 @@ export { UserDistribution } from "./components/UserDistribution";
 export * from "./config/dashboardStats";
 export * from "./config/quickActions";
 export * from "./config/userDistribution";
+
+export * from "./hooks/useDashboard";
+export * from "./types";

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { quickActionsConfig, QuickAction } from "@features/dashboard/config/quickActions";

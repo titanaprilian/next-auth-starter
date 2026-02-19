@@ -1,0 +1,31 @@
+import { NextRequest, NextResponse } from "next/server";
+import { API_ENDPOINTS } from "@api/api";
+
+export async function GET(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get("authorization");
+
+    const response = await fetch(API_ENDPOINTS.DASHBOARD.LIST, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(authHeader && { Authorization: authHeader }),
+      },
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: true,
+        code: 0,
+        message: "Failed to fetch dashboard data",
+        data: null,
+      },
+      { status: 500 },
+    );
+  }
+}
