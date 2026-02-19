@@ -87,6 +87,74 @@
       "noResults": "No se encontraron usuarios"
     }
   },
+  "role": {
+    "label": "rol",
+    "pageTitle": "Roles y Permisos",
+    "description": "Administra los roles y sus permisos de acceso",
+    "filterDescription": "Buscar y filtrar roles",
+    "searchPlaceholder": "Buscar roles...",
+    "add": {
+      "title": "Agregar Nuevo Rol",
+      "description": "Completa la información a continuación para crear un nuevo rol."
+    },
+    "edit": {
+      "title": "Editar Rol",
+      "description": "Actualiza la información del rol a continuación."
+    },
+    "view": {
+      "title": "Detalles del Rol",
+      "description": "Ver la información y permisos del rol."
+    },
+    "delete": {
+      "title": "Eliminar Rol",
+      "description": "¿Estás seguro de que deseas eliminar este rol? Esta acción no se puede deshacer.",
+      "confirmButton": "Eliminar Rol"
+    },
+    "fields": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "permissions": "Permisos",
+      "createdAt": "Fecha de Creación"
+    },
+    "pagination": {
+      "showing": "Mostrando {start} a {end} de {total} entradas",
+      "rows": "Filas"
+    },
+    "form": {
+      "name": {
+        "label": "Nombre del Rol",
+        "placeholder": "Ingresa el nombre del rol"
+      },
+      "description": {
+        "label": "Descripción",
+        "placeholder": "Ingresa la descripción del rol"
+      },
+      "permissions": {
+        "label": "Permisos",
+        "placeholder": "Seleccionar permisos"
+      },
+      "resetButton": "Restablecer",
+      "saveButton": "Guardar Cambios",
+      "savingText": "Guardando..."
+    },
+    "table": {
+      "no": "No",
+      "name": "Nombre",
+      "description": "Descripción",
+      "permissions": "Permisos",
+      "createdAt": "Fecha de Creación",
+      "actions": "Acciones",
+      "noResults": "No se encontraron roles"
+    },
+    "permission": {
+      "create": "Crear",
+      "read": "Leer",
+      "update": "Actualizar",
+      "delete": "Eliminar",
+      "print": "Imprimir",
+      "all": "Acceso Total"
+    }
+  },
   "navigation": {
     "dashboard": "Panel",
     "management": "Gestión",
@@ -95,6 +163,39 @@
     "settings": "Configuración",
     "systemName": "RBAC Admin",
     "systemVersion": "v1.0"
+  },
+  "auth": {
+    "pageTitle": "Iniciar Sesión",
+    "systemName": "Next Auth Starter",
+    "systemDescription": "Autenticación segura con control de acceso basado en roles para tu aplicación.",
+    "form": {
+      "welcomeTitle": "Bienvenido",
+      "welcomeDescription": "Ingresa tu correo electrónico a continuación para iniciar sesión en tu cuenta.",
+      "email": {
+        "label": "Correo Electrónico",
+        "placeholder": "m@ejemplo.com"
+      },
+      "password": {
+        "label": "Contraseña",
+        "placeholder": "Ingresa tu contraseña",
+        "show": "Mostrar contraseña",
+        "hide": "Ocultar contraseña"
+      },
+      "submit": {
+        "login": "Iniciar Sesión",
+        "loggingIn": "Iniciando sesión..."
+      }
+    },
+    "messages": {
+      "loginSuccess": "Inicio de sesión exitoso",
+      "loginError": "Error al iniciar sesión",
+      "logoutSuccess": "Cierre de sesión exitoso",
+      "logoutError": "Error al cerrar sesión",
+      "fetchUserError": "Error al obtener usuario",
+      "refreshSessionError": "Error al actualizar la sesión",
+      "networkError": "Error de red",
+      "unauthorized": "No autorizado"
+    }
   },
   "dashboard": {
     "defaultUser": "Usuario",

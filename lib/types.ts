@@ -2,7 +2,7 @@ export interface ApiErrorResponse {
   error: boolean;
   code: number;
   message: string;
-  issues?: Array<{ path: string; message: string }>;
+  issues?: Array<{ field: string; message: string }>;
 }
 
 export interface ApiResponse<T> {

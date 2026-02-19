@@ -42,12 +42,6 @@ export function useUserManagement() {
     });
   };
 
-  const handleConfirmDelete = () => {
-    if (deleteDialog.selectedUser) {
-      handleDeleteUser(deleteDialog.selectedUser.id);
-    }
-  };
-
   const handleCreateUser = (data: UserFormData) => {
     createUser.mutate(data, {
       onSuccess: () => {
@@ -58,7 +52,7 @@ export function useUserManagement() {
         const { message, issues } = extractApiError(error);
         if (issues.length > 0) {
           issues.forEach((issue) => {
-            toast.error(issue.message);
+            toast.error(`${issue.field}: ${issue.message}`);
           });
         } else {
           toast.error(message || "Failed to create user");
@@ -80,7 +74,7 @@ export function useUserManagement() {
           const { message, issues } = extractApiError(error);
           if (issues.length > 0) {
             issues.forEach((issue) => {
-              toast.error(issue.message);
+              toast.error(`${issue.field}: ${issue.message}`);
             });
           } else {
             toast.error(message || "Failed to update user");

@@ -17,5 +17,12 @@ export const API_ENDPOINTS = {
   },
   RBAC: {
     ROLES_OPTIONS: `${API_URL}/rbac/roles/options`,
+    ROLES_LIST: `${API_URL}/rbac/roles`,
+    ROLES_GET_BY_ID: (id: string) => `${API_URL}/rbac/roles/${id}`,
+    ROLES_CREATE: `${API_URL}/rbac/roles`,
+    ROLES_UPDATE: (id: string) => `${API_URL}/rbac/roles/${id}`,
+    ROLES_DELETE: (id: string) => `${API_URL}/rbac/roles/${id}`,
+    ROLES_ME: `${API_URL}/rbac/roles/me`,
+    FEATURES: `${API_URL}/rbac/features`,
   },
 };

@@ -77,7 +77,7 @@ export const useLoginForm = () => {
 
       // Set field-level errors from the API response
       issues.forEach((issue) => {
-        form.setError(issue.path as any, {
+        form.setError(issue.field as any, {
           message: issue.message,
         });
       });

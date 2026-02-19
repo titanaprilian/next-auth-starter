@@ -87,14 +87,115 @@
       "noResults": "Tidak ada pengguna ditemukan"
     }
   },
+  "role": {
+    "label": "peran",
+    "pageTitle": "Peran & Izin",
+    "description": "Kelola peran dan izin akses mereka",
+    "filterDescription": "Cari dan filter peran",
+    "searchPlaceholder": "Cari peran...",
+    "add": {
+      "title": "Tambah Peran Baru",
+      "description": "Isi informasi di bawah untuk membuat peran baru."
+    },
+    "edit": {
+      "title": "Edit Peran",
+      "description": "Perbarui informasi peran di bawah."
+    },
+    "view": {
+      "title": "Detail Peran",
+      "description": "Lihat informasi dan izin peran."
+    },
+    "delete": {
+      "title": "Hapus Peran",
+      "description": "Apakah Anda yakin ingin menghapus peran ini? Tindakan ini tidak dapat dibatalkan.",
+      "confirmButton": "Hapus Peran"
+    },
+    "fields": {
+      "name": "Nama",
+      "description": "Deskripsi",
+      "permissions": "Izin",
+      "createdAt": "Dibuat Pada"
+    },
+    "pagination": {
+      "showing": "Menampilkan {start} hingga {end} dari {total} entri",
+      "rows": "Baris"
+    },
+    "form": {
+      "name": {
+        "label": "Nama Peran",
+        "placeholder": "Masukkan nama peran"
+      },
+      "description": {
+        "label": "Deskripsi",
+        "placeholder": "Masukkan deskripsi peran"
+      },
+      "permissions": {
+        "label": "Izin",
+        "placeholder": "Pilih izin"
+      },
+      "resetButton": "Reset",
+      "saveButton": "Simpan Perubahan",
+      "savingText": "Menyimpan..."
+    },
+    "table": {
+      "no": "No",
+      "name": "Nama",
+      "description": "Deskripsi",
+      "permissions": "Izin",
+      "createdAt": "Dibuat Pada",
+      "actions": "Aksi",
+      "noResults": "Tidak ada peran ditemukan"
+    },
+    "permission": {
+      "create": "Buat",
+      "read": "Baca",
+      "update": "Update",
+      "delete": "Hapus",
+      "print": "Cetak",
+      "all": "Akses Penuh"
+    }
+  },
   "navigation": {
-    "dashboard": "Dasbor",
-    "management": "Kelola",
+    "dashboard": "Dashboard",
+    "management": "Manajemen Pengguna",
     "users": "Pengguna",
     "roles": "Peran & Izin",
     "settings": "Pengaturan",
     "systemName": "RBAC Admin",
     "systemVersion": "v1.0"
+  },
+  "auth": {
+    "pageTitle": "Masuk",
+    "systemName": "Next Auth Starter",
+    "systemDescription": "Autentikasi aman dengan kontrol akses berbasis peran untuk aplikasi Anda.",
+    "form": {
+      "welcomeTitle": "Selamat Datang",
+      "welcomeDescription": "Masukkan email Anda di bawah untuk masuk ke akun Anda.",
+      "email": {
+        "label": "Email",
+        "placeholder": "m@contoh.com"
+      },
+      "password": {
+        "label": "Kata Sandi",
+        "placeholder": "Masukkan kata sandi Anda",
+        "show": "Tampilkan kata sandi",
+        "hide": "Sembunyikan kata sandi"
+      },
+      "submit": {
+        "login": "Masuk",
+        "loggingIn": "Masuk..."
+      }
+    },
+    "messages": {
+      "loginSuccess": "Berhasil masuk",
+      "loginError": "Gagal masuk",
+      "logoutSuccess": "Berhasil keluar",
+      "logoutError": "Gagal keluar",
+      "fetchUserError": "Gagal mengambil pengguna",
+      "refreshSessionError": "Gagal menyegarkan sesi",
+      "networkError": "Terjadi kesalahan jaringan",
+      "unauthorized": "Tidak sah"
+    }
   },
   "dashboard": {
     "defaultUser": "Pengguna",

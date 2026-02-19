@@ -1,10 +1,16 @@
+"use client";
+
 import Image from "next/image";
+import { authConfig } from "@/features/auth/config/auth";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 
 interface LoginBrandingProps {
   logoUrl?: string;
 }
 
 export function LoginBranding({ logoUrl }: LoginBrandingProps) {
+  const t = useTranslations();
+
   return (
     <div className="text-center px-2">
       {logoUrl ? (
@@ -16,10 +22,9 @@ export function LoginBranding({ logoUrl }: LoginBrandingProps) {
           <span className="text-2xl font-bold text-primary-foreground">N</span>
         </div>
       )}
-      <h1 className="text-4xl font-bold tracking-tight">Next Auth Starter</h1>
+      <h1 className="text-4xl font-bold tracking-tight">{t(authConfig.systemNameKey)}</h1>
       <p className="mt-4 text-lg text-branding">
-        Secure authentication with role-based access control for your
-        application.
+        {t(authConfig.systemDescriptionKey)}
       </p>
     </div>
   );

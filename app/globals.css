@@ -155,3 +155,13 @@
   background-color: var(--branding-dark) !important;
   color: var(--branding-foreground) !important;
 }
+
+/* Custom Checkbox Styling */
+[data-slot="checkbox"][data-state="checked"] {
+  background-color: var(--branding-dark) !important;
+  border-color: var(--branding-dark) !important;
+}
+
+[data-slot="checkbox"][data-state="checked"] [data-slot="checkbox-indicator"] {
+  color: var(--branding-foreground) !important;
+}

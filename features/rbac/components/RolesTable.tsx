@@ -10,7 +10,6 @@ import {
   ChevronsRight,
   ChevronLeft,
   ChevronRight,
-  Circle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,20 +30,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { User } from "../types";
-import { userManagementConfig } from "../config/userManagement";
+import { RoleListItem, Role } from "../types";
+import { roleManagementConfig } from "../config/roleManagement";
 
-export interface UsersTableProps {
-  data: User[];
+export interface RolesTableProps {
+  data: RoleListItem[];
   isLoading: boolean;
   page: number;
   limit: number;
   total: number;
   onPageChange: (page: number) => void;
   onLimitChange: (limit: number) => void;
-  onView: (user: User) => void;
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
+  onView: (role: Role) => void;
+  onEdit: (role: Role) => void;
+  onDelete: (role: RoleListItem) => void;
 }
 
 const TableSkeleton = () => (
@@ -55,16 +54,10 @@ const TableSkeleton = () => (
           <Skeleton className="h-4 w-[30px]" />
         </TableCell>
         <TableCell>
-          <Skeleton className="h-4 w-[120px]" />
+          <Skeleton className="h-4 w-[150px]" />
         </TableCell>
         <TableCell>
-          <Skeleton className="h-4 w-[180px]" />
-        </TableCell>
-        <TableCell>
-          <Skeleton className="h-6 w-[80px] rounded-full" />
-        </TableCell>
-        <TableCell>
-          <Skeleton className="h-6 w-[70px] rounded-full" />
+          <Skeleton className="h-4 w-[250px]" />
         </TableCell>
         <TableCell>
           <Skeleton className="h-4 w-[100px]" />
@@ -119,7 +112,7 @@ const getPageNumbers = (
   return pages;
 };
 
-export function UsersTable({
+export function RolesTable({
   data,
   isLoading,
   page,
@@ -130,20 +123,24 @@ export function UsersTable({
   onView,
   onEdit,
   onDelete,
-}: UsersTableProps) {
+}: RolesTableProps) {
   const t = useTranslations();
   const [viewingId, setViewingId] = useState<string | null>(null);
-  const tableConfig = userManagementConfig.table;
+  const tableConfig = roleManagementConfig.table;
 
   const totalPages = Math.ceil(total / limit);
   const pageNumbers = getPageNumbers(page, totalPages);
 
-  const handleView = async (user: User) => {
-    setViewingId(user.id);
+  const handleView = async (role: RoleListItem) => {
+    setViewingId(role.id);
     setTimeout(async () => {
-      await onView(user);
+      await onView(role as Role);
       setViewingId(null);
     }, 0);
+  };
+
+  const handleEdit = (role: RoleListItem) => {
+    onEdit(role as Role);
   };
 
   return (
@@ -156,17 +153,11 @@ export function UsersTable({
                 <TableHead className="w-[50px] px-4">
                   {t(tableConfig.no)}
                 </TableHead>
-                <TableHead className="w-[20%] px-4">
+                <TableHead className="w-[25%] px-4">
                   {t(tableConfig.name)}
                 </TableHead>
-                <TableHead className="w-[25%] px-4">
-                  {t(tableConfig.email)}
-                </TableHead>
-                <TableHead className="w-[15%] px-4">
-                  {t(tableConfig.role)}
-                </TableHead>
-                <TableHead className="w-[15%] px-4">
-                  {t(tableConfig.status)}
+                <TableHead className="w-[40%] px-4">
+                  {t(tableConfig.description)}
                 </TableHead>
                 <TableHead className="w-[15%] px-4">
                   {t(tableConfig.createdAt)}
@@ -176,55 +167,34 @@ export function UsersTable({
                 </TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+              <TableBody>
               {isLoading ? (
                 <TableSkeleton />
               ) : data.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={7}
+                    colSpan={5}
                     className="h-24 text-center text-muted-foreground"
                   >
                     {t(tableConfig.noResults)}
                   </TableCell>
                 </TableRow>
               ) : (
-                data.map((user, index) => (
-                  <TableRow key={user.id}>
+                data.map((role, index) => (
+                  <TableRow key={role.id}>
                     <TableCell className="px-4">
                       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-branding-dark text-white text-xs">
                         {(page - 1) * limit + index + 1}
                       </span>
                     </TableCell>
                     <TableCell className="font-medium px-4">
-                      {user.name}
+                      {role.name}
                     </TableCell>
                     <TableCell className="text-muted-foreground px-4">
-                      {user.email}
-                    </TableCell>
-                    <TableCell className="px-4">
-                      <Badge variant="secondary">{user.roleName}</Badge>
-                    </TableCell>
-                    <TableCell className="px-4">
-                      <div className="flex items-center gap-2">
-                        <Circle
-                          className={`h-2.5 w-2.5 fill-current ${
-                            user.isActive ? "text-green-500" : "text-red-500"
-                          }`}
-                        />
-                        <span
-                          className={
-                            user.isActive ? "text-green-700" : "text-red-700"
-                          }
-                        >
-                          {user.isActive
-                            ? t("common.active")
-                            : t("common.inactive")}
-                        </span>
-                      </div>
+                      {role.description || "-"}
                     </TableCell>
                     <TableCell className="text-muted-foreground px-4">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {new Date(role.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="px-4">
                       <div className="flex items-center gap-1">
@@ -232,7 +202,7 @@ export function UsersTable({
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 bg-branding-dark hover:bg-branding-dark/90"
-                          onClick={() => handleView(user)}
+                          onClick={() => handleView(role)}
                           disabled={viewingId !== null}
                         >
                           <Eye className="h-4 w-4 text-white" />
@@ -241,7 +211,7 @@ export function UsersTable({
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 bg-orange-500 hover:bg-orange-600"
-                          onClick={() => onEdit(user)}
+                          onClick={() => handleEdit(role)}
                           disabled={viewingId !== null}
                         >
                           <Pencil className="h-4 w-4 text-white" />
@@ -250,7 +220,7 @@ export function UsersTable({
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 bg-destructive hover:bg-destructive/90"
-                          onClick={() => onDelete(user)}
+                          onClick={() => onDelete(role)}
                           disabled={viewingId !== null}
                         >
                           <Trash2 className="h-4 w-4 text-white" />
@@ -267,7 +237,7 @@ export function UsersTable({
         <div className="flex items-center justify-between border-t px-6 py-4">
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              {t(userManagementConfig.pagination.showingKey, {
+              {t(roleManagementConfig.pagination.showingKey, {
                 start: (page - 1) * limit + 1,
                 end: Math.min(page * limit, total),
                 total,
@@ -338,7 +308,9 @@ export function UsersTable({
             </div>
 
             <div className="flex items-center gap-2 ml-4">
-              <span className="text-sm text-muted-foreground">{t(userManagementConfig.pagination.rowsKey)}:</span>
+              <span className="text-sm text-muted-foreground">
+                {t(roleManagementConfig.pagination.rowsKey)}:
+              </span>
               <Select
                 value={String(limit)}
                 onValueChange={(value) => onLimitChange(Number(value))}

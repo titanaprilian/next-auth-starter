@@ -87,6 +87,74 @@
       "noResults": "No users found"
     }
   },
+  "role": {
+    "label": "role",
+    "pageTitle": "Roles & Permissions",
+    "description": "Manage roles and their access permissions",
+    "filterDescription": "Search and filter roles",
+    "searchPlaceholder": "Search roles...",
+    "add": {
+      "title": "Add New Role",
+      "description": "Fill in the information below to create a new role."
+    },
+    "edit": {
+      "title": "Edit Role",
+      "description": "Update the role information below."
+    },
+    "view": {
+      "title": "Role Details",
+      "description": "View the role's information and permissions."
+    },
+    "delete": {
+      "title": "Delete Role",
+      "description": "Are you sure you want to delete this role? This action cannot be undone.",
+      "confirmButton": "Delete Role"
+    },
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "permissions": "Permissions",
+      "createdAt": "Created At"
+    },
+    "pagination": {
+      "showing": "Showing {start} to {end} of {total} entries",
+      "rows": "Rows"
+    },
+    "form": {
+      "name": {
+        "label": "Role Name",
+        "placeholder": "Enter role name"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter role description"
+      },
+      "permissions": {
+        "label": "Permissions",
+        "placeholder": "Select permissions"
+      },
+      "resetButton": "Reset",
+      "saveButton": "Save Changes",
+      "savingText": "Saving..."
+    },
+    "table": {
+      "no": "No",
+      "name": "Name",
+      "description": "Description",
+      "permissions": "Permissions",
+      "createdAt": "Created At",
+      "actions": "Actions",
+      "noResults": "No roles found"
+    },
+    "permission": {
+      "create": "Create",
+      "read": "Read",
+      "update": "Update",
+      "delete": "Delete",
+      "print": "Print",
+      "all": "All Access"
+    }
+  },
   "navigation": {
     "dashboard": "Dashboard",
     "management": "Management",
@@ -95,6 +163,39 @@
     "settings": "Settings",
     "systemName": "RBAC Admin",
     "systemVersion": "v1.0"
+  },
+  "auth": {
+    "pageTitle": "Login",
+    "systemName": "Next Auth Starter",
+    "systemDescription": "Secure authentication with role-based access control for your application.",
+    "form": {
+      "welcomeTitle": "Welcome",
+      "welcomeDescription": "Enter your email below to login to your account.",
+      "email": {
+        "label": "Email",
+        "placeholder": "m@example.com"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "show": "Show password",
+        "hide": "Hide password"
+      },
+      "submit": {
+        "login": "Login",
+        "loggingIn": "Logging in..."
+      }
+    },
+    "messages": {
+      "loginSuccess": "Login successful",
+      "loginError": "Login failed",
+      "logoutSuccess": "Logout successful",
+      "logoutError": "Logout failed",
+      "fetchUserError": "Failed to fetch user",
+      "refreshSessionError": "Failed to refresh session",
+      "networkError": "Network error occurred",
+      "unauthorized": "Unauthorized"
+    }
   },
   "dashboard": {
     "defaultUser": "User",

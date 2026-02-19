@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Circle } from "lucide-react";
@@ -39,6 +39,7 @@ export function UserForm({
   const isEditMode = !!defaultValues?.email;
   const [showPassword, setShowPassword] = useState(false);
   const formConfig = userManagementConfig.form;
+  const isSubmittingRef = useRef(false);
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userFormSchema),
@@ -51,15 +52,23 @@ export function UserForm({
     },
   });
 
+  const defaultValuesRef = useRef(defaultValues);
+
   useEffect(() => {
-    if (defaultValues) {
+    if (!isSubmittingRef.current && defaultValues && defaultValuesRef.current !== defaultValues) {
+      defaultValuesRef.current = defaultValues;
       form.reset(defaultValues);
     }
   }, [defaultValues, form]);
 
+  const handleSubmit = (data: UserFormData) => {
+    isSubmittingRef.current = true;
+    onSubmit(data);
+  };
+
   return (
     <form
-      onSubmit={form.handleSubmit(onSubmit)}
+      onSubmit={form.handleSubmit(handleSubmit)}
       className="-mx-6 space-y-5 px-6"
     >
       <div className="space-y-2">
