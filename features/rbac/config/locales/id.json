@@ -1,0 +1,68 @@
+{
+  "label": "peran",
+  "pageTitle": "Peran & Izin",
+  "description": "Kelola peran dan izin akses mereka",
+  "filterDescription": "Cari dan filter peran",
+  "searchPlaceholder": "Cari peran...",
+  "add": {
+    "title": "Tambah Peran Baru",
+    "description": "Isi informasi di bawah untuk membuat peran baru."
+  },
+  "edit": {
+    "title": "Edit Peran",
+    "description": "Perbarui informasi peran di bawah."
+  },
+  "view": {
+    "title": "Detail Peran",
+    "description": "Lihat informasi dan izin peran."
+  },
+  "delete": {
+    "title": "Hapus Peran",
+    "description": "Apakah Anda yakin ingin menghapus peran ini? Tindakan ini tidak dapat dibatalkan.",
+    "confirmButton": "Hapus Peran"
+  },
+  "fields": {
+    "name": "Nama",
+    "description": "Deskripsi",
+    "permissions": "Izin",
+    "createdAt": "Dibuat Pada"
+  },
+  "pagination": {
+    "showing": "Menampilkan {start} hingga {end} dari {total} entri",
+    "rows": "Baris"
+  },
+  "form": {
+    "name": {
+      "label": "Nama Peran",
+      "placeholder": "Masukkan nama peran"
+    },
+    "description": {
+      "label": "Deskripsi",
+      "placeholder": "Masukkan deskripsi peran"
+    },
+    "permissions": {
+      "label": "Izin",
+      "placeholder": "Pilih izin"
+    },
+    "resetButton": "Reset",
+    "saveButton": "Simpan Perubahan",
+    "savingText": "Menyimpan..."
+  },
+  "table": {
+    "no": "No",
+    "name": "Nama",
+    "description": "Deskripsi",
+    "permissions": "Izin",
+    "createdAt": "Dibuat Pada",
+    "actions": "Aksi",
+    "noResults": "Tidak ada peran ditemukan"
+  },
+  "permission": {
+    "create": "Buat",
+    "read": "Baca",
+    "update": "Update",
+    "delete": "Hapus",
+    "print": "Cetak",
+    "all": "Akses Penuh"
+  }
+}

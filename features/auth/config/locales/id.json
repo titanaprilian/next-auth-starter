@@ -1,0 +1,33 @@
+{
+  "pageTitle": "Masuk",
+  "systemName": "Next Auth Starter",
+  "systemDescription": "Autentikasi aman dengan kontrol akses berbasis peran untuk aplikasi Anda.",
+  "form": {
+    "welcomeTitle": "Selamat Datang",
+    "welcomeDescription": "Masukkan email Anda di bawah untuk masuk ke akun Anda.",
+    "email": {
+      "label": "Email",
+      "placeholder": "m@contoh.com"
+    },
+    "password": {
+      "label": "Kata Sandi",
+      "placeholder": "Masukkan kata sandi Anda",
+      "show": "Tampilkan kata sandi",
+      "hide": "Sembunyikan kata sandi"
+    },
+    "submit": {
+      "login": "Masuk",
+      "loggingIn": "Masuk..."
+    }
+  },
+  "messages": {
+    "loginSuccess": "Berhasil masuk",
+    "loginError": "Gagal masuk",
+    "logoutSuccess": "Berhasil keluar",
+    "logoutError": "Gagal keluar",
+    "fetchUserError": "Gagal mengambil pengguna",
+    "refreshSessionError": "Gagal menyegarkan sesi",
+    "networkError": "Terjadi kesalahan jaringan",
+    "unauthorized": "Tidak sah"
+  }
+}

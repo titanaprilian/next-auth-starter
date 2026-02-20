@@ -1,0 +1,34 @@
+{
+  "defaultUser": "Usuario",
+  "welcome": "Bienvenido al Sistema RBAC Admin",
+  "greeting": {
+    "morning": "Buenos Días",
+    "afternoon": "Buenas Tardes",
+    "evening": "Buenas Noches"
+  },
+  "stats": {
+    "totalUsers": "Total de Usuarios",
+    "totalUsersDesc": "Todos los usuarios registrados",
+    "activeUsers": "Usuarios Activos",
+    "activeUsersDesc": "Usuarios actualmente activos",
+    "totalRoles": "Total de Roles",
+    "totalRolesDesc": "Roles definidos en el sistema",
+    "permissions": "Permisos",
+    "permissionsDesc": "Total de permisos"
+  },
+  "quickActions": {
+    "title": "Acciones Rápidas",
+    "manageUsers": "Gestionar Usuarios",
+    "manageUsersDesc": "Agregar, editar o eliminar usuarios",
+    "rolePermissions": "Roles y Permisos",
+    "rolePermissionsDesc": "Gestionar roles y sus permisos"
+  },
+  "userDistribution": {
+    "title": "Distribución de Usuarios",
+    "total": "Total: {total} usuarios",
+    "admin": "Administrador",
+    "manager": "Gerente",
+    "user": "Usuario",
+    "guest": "Invitado"
+  }
+}

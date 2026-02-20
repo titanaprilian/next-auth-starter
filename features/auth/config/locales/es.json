@@ -1,0 +1,33 @@
+{
+  "pageTitle": "Iniciar Sesión",
+  "systemName": "Next Auth Starter",
+  "systemDescription": "Autenticación segura con control de acceso basado en roles para tu aplicación.",
+  "form": {
+    "welcomeTitle": "Bienvenido",
+    "welcomeDescription": "Ingresa tu correo electrónico a continuación para iniciar sesión en tu cuenta.",
+    "email": {
+      "label": "Correo Electrónico",
+      "placeholder": "m@ejemplo.com"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa tu contraseña",
+      "show": "Mostrar contraseña",
+      "hide": "Ocultar contraseña"
+    },
+    "submit": {
+      "login": "Iniciar Sesión",
+      "loggingIn": "Iniciando sesión..."
+    }
+  },
+  "messages": {
+    "loginSuccess": "Inicio de sesión exitoso",
+    "loginError": "Error al iniciar sesión",
+    "logoutSuccess": "Cierre de sesión exitoso",
+    "logoutError": "Error al cerrar sesión",
+    "fetchUserError": "Error al obtener usuario",
+    "refreshSessionError": "Error al actualizar la sesión",
+    "networkError": "Error de red",
+    "unauthorized": "No autorizado"
+  }
+}

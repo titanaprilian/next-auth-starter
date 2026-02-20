@@ -1,0 +1,71 @@
+{
+  "label": "usuario",
+  "pageTitle": "Gestión de Usuarios",
+  "description": "Administra las cuentas de usuario y sus permisos",
+  "filterDescription": "Buscar y filtrar usuarios",
+  "searchPlaceholder": "Buscar usuarios...",
+  "add": {
+    "title": "Agregar Nuevo Usuario",
+    "description": "Completa la información a continuación para crear una nueva cuenta de usuario."
+  },
+  "edit": {
+    "title": "Editar Usuario",
+    "description": "Actualiza la información del usuario a continuación."
+  },
+  "view": {
+    "title": "Detalles del Usuario",
+    "description": "Ver la información de la cuenta del usuario."
+  },
+  "delete": {
+    "title": "Eliminar Usuario",
+    "description": "¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.",
+    "confirmButton": "Eliminar Usuario"
+  },
+  "fields": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "role": "Rol",
+    "status": "Estado"
+  },
+  "pagination": {
+    "showing": "Mostrando {start} a {end} de {total} entradas",
+    "rows": "Filas"
+  },
+  "form": {
+    "name": {
+      "label": "Nombre Completo",
+      "placeholder": "Ingresa el nombre completo"
+    },
+    "email": {
+      "label": "Correo Electrónico",
+      "placeholder": "Ingresa el correo electrónico"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa la contraseña",
+      "hintNew": "La contraseña debe tener al menos 6 caracteres",
+      "hintEdit": "Deja en blanco si no deseas cambiar la contraseña"
+    },
+    "role": {
+      "label": "Rol",
+      "placeholder": "Seleccionar rol"
+    },
+    "status": {
+      "label": "Estado",
+      "placeholder": "Seleccionar estado"
+    },
+    "resetButton": "Restablecer",
+    "saveButton": "Guardar Cambios",
+    "savingText": "Guardando..."
+  },
+  "table": {
+    "no": "No",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "role": "Rol",
+    "status": "Estado",
+    "createdAt": "Fecha de Creación",
+    "actions": "Acciones",
+    "noResults": "No se encontraron usuarios"
+  }
+}

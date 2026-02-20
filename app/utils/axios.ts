@@ -29,6 +29,7 @@ const setLogoutState = (value: boolean) => {
 
 let accessToken: string | null = null;
 let refreshSubscriber: ((token: string) => void) | null = null;
+let currentLocale: string = "en";
 let isRefreshing = false;
 let isLoggedOut = getLogoutState();
 let failedQueue: Array<{ resolve: (value: unknown) => void; reject: (reason?: unknown) => void }> = [];
@@ -98,6 +99,19 @@ export const clearLogoutState = () => {
 };
 
 /**
+ * Sets the current locale for API requests.
+ * Used to send accept-language header to backend.
+ */
+export const setApiLocale = (locale: string) => {
+  currentLocale = locale;
+};
+
+/**
+ * Gets the current locale for API requests.
+ */
+export const getApiLocale = () => currentLocale;
+
+/**
  * Sets a callback to be notified when a new token is received.
  * Used for syncing token across multiple components.
  */
@@ -148,6 +162,10 @@ const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
 
     if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    if (config.headers) {
+      config.headers["accept-language"] = currentLocale;
     }
 
     return config;
@@ -229,6 +247,10 @@ Axios.interceptors.request.use((config) => {
 
   if (accessToken && config.headers) {
     config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  if (config.headers) {
+    config.headers["accept-language"] = currentLocale;
   }
 
   return config;

@@ -1,0 +1,68 @@
+{
+  "label": "rol",
+  "pageTitle": "Roles y Permisos",
+  "description": "Administra los roles y sus permisos de acceso",
+  "filterDescription": "Buscar y filtrar roles",
+  "searchPlaceholder": "Buscar roles...",
+  "add": {
+    "title": "Agregar Nuevo Rol",
+    "description": "Completa la información a continuación para crear un nuevo rol."
+  },
+  "edit": {
+    "title": "Editar Rol",
+    "description": "Actualiza la información del rol a continuación."
+  },
+  "view": {
+    "title": "Detalles del Rol",
+    "description": "Ver la información y permisos del rol."
+  },
+  "delete": {
+    "title": "Eliminar Rol",
+    "description": "¿Estás seguro de que deseas eliminar este rol? Esta acción no se puede deshacer.",
+    "confirmButton": "Eliminar Rol"
+  },
+  "fields": {
+    "name": "Nombre",
+    "description": "Descripción",
+    "permissions": "Permisos",
+    "createdAt": "Fecha de Creación"
+  },
+  "pagination": {
+    "showing": "Mostrando {start} a {end} de {total} entradas",
+    "rows": "Filas"
+  },
+  "form": {
+    "name": {
+      "label": "Nombre del Rol",
+      "placeholder": "Ingresa el nombre del rol"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Ingresa la descripción del rol"
+    },
+    "permissions": {
+      "label": "Permisos",
+      "placeholder": "Seleccionar permisos"
+    },
+    "resetButton": "Restablecer",
+    "saveButton": "Guardar Cambios",
+    "savingText": "Guardando..."
+  },
+  "table": {
+    "no": "No",
+    "name": "Nombre",
+    "description": "Descripción",
+    "permissions": "Permisos",
+    "createdAt": "Fecha de Creación",
+      "actions": "Acciones",
+      "noResults": "No se encontraron roles"
+  },
+  "permission": {
+    "create": "Crear",
+    "read": "Leer",
+    "update": "Actualizar",
+    "delete": "Eliminar",
+    "print": "Imprimir",
+    "all": "Acceso Total"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "label": "pengguna",
+  "pageTitle": "Kelola Pengguna",
+  "description": "Kelola akun pengguna dan izin mereka",
+  "filterDescription": "Cari dan filter pengguna",
+  "searchPlaceholder": "Cari pengguna...",
+  "add": {
+    "title": "Tambah Pengguna Baru",
+    "description": "Isi informasi di bawah untuk membuat akun pengguna baru."
+  },
+  "edit": {
+    "title": "Edit Pengguna",
+    "description": "Perbarui informasi pengguna di bawah."
+  },
+  "view": {
+    "title": "Detail Pengguna",
+    "description": "Lihat informasi akun pengguna."
+  },
+  "delete": {
+    "title": "Hapus Pengguna",
+    "description": "Apakah Anda yakin ingin menghapus pengguna ini? Tindakan ini tidak dapat dibatalkan.",
+    "confirmButton": "Hapus Pengguna"
+  },
+  "fields": {
+    "name": "Nama",
+    "email": "Email",
+    "role": "Peran",
+    "status": "Status"
+  },
+  "pagination": {
+    "showing": "Menampilkan {start} hingga {end} dari {total} entri",
+    "rows": "Baris"
+  },
+  "form": {
+    "name": {
+      "label": "Nama Lengkap",
+      "placeholder": "Masukkan nama lengkap"
+    },
+    "email": {
+      "label": "Alamat Email",
+      "placeholder": "Masukkan alamat email"
+    },
+    "password": {
+      "label": "Kata Sandi",
+      "placeholder": "Masukkan kata sandi",
+      "hintNew": "Kata sandi minimal 6 karakter",
+      "hintEdit": "Kosongkan jika tidak ingin mengubah kata sandi"
+    },
+    "role": {
+      "label": "Peran",
+      "placeholder": "Pilih peran"
+    },
+    "status": {
+      "label": "Status",
+      "placeholder": "Pilih status"
+    },
+    "resetButton": "Reset",
+    "saveButton": "Simpan Perubahan",
+    "savingText": "Menyimpan..."
+  },
+  "table": {
+    "no": "No",
+    "name": "Nama",
+    "email": "Email",
+    "role": "Peran",
+    "status": "Status",
+    "createdAt": "Dibuat Pada",
+    "actions": "Aksi",
+    "noResults": "Tidak ada pengguna ditemukan"
+  }
+}

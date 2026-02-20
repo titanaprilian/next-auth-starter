@@ -7,14 +7,57 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import enMessages from "../../messages/en.json";
-import esMessages from "../../messages/es.json";
-import idMessages from "../../messages/id.json";
+import { setApiLocale } from "@/app/utils/axios";
+
+import commonEn from "../../messages/en.json";
+import commonEs from "../../messages/es.json";
+import commonId from "../../messages/id.json";
+
+import userEn from "@/features/user/config/locales/en.json";
+import userEs from "@/features/user/config/locales/es.json";
+import userId from "@/features/user/config/locales/id.json";
+
+import roleEn from "@/features/rbac/config/locales/en.json";
+import roleEs from "@/features/rbac/config/locales/es.json";
+import roleId from "@/features/rbac/config/locales/id.json";
+
+import authEn from "@/features/auth/config/locales/en.json";
+import authEs from "@/features/auth/config/locales/es.json";
+import authId from "@/features/auth/config/locales/id.json";
+
+import dashboardEn from "@/features/dashboard/config/locales/en.json";
+import dashboardEs from "@/features/dashboard/config/locales/es.json";
+import dashboardId from "@/features/dashboard/config/locales/id.json";
+
+import navigationEn from "@/features/layout/config/locales/en.json";
+import navigationEs from "@/features/layout/config/locales/es.json";
+import navigationId from "@/features/layout/config/locales/id.json";
 
 const messages = {
-  en: enMessages,
-  es: esMessages,
-  id: idMessages,
+  en: {
+    common: commonEn.common,
+    user: userEn,
+    role: roleEn,
+    auth: authEn,
+    dashboard: dashboardEn,
+    navigation: navigationEn,
+  },
+  es: {
+    common: commonEs.common,
+    user: userEs,
+    role: roleEs,
+    auth: authEs,
+    dashboard: dashboardEs,
+    navigation: navigationEs,
+  },
+  id: {
+    common: commonId.common,
+    user: userId,
+    role: roleId,
+    auth: authId,
+    dashboard: dashboardId,
+    navigation: navigationId,
+  },
 };
 
 type Locale = "en" | "es" | "id";
@@ -53,6 +96,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setLocaleState(newLocale);
     document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
   };
+
+  useEffect(() => {
+    setApiLocale(locale);
+  }, [locale]);
 
   return (
     <I18nContext.Provider

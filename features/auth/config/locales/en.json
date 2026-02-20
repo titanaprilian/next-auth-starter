@@ -1,0 +1,33 @@
+{
+  "pageTitle": "Login",
+  "systemName": "Next Auth Starter",
+  "systemDescription": "Secure authentication with role-based access control for your application.",
+  "form": {
+    "welcomeTitle": "Welcome",
+    "welcomeDescription": "Enter your email below to login to your account.",
+    "email": {
+      "label": "Email",
+      "placeholder": "m@example.com"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "submit": {
+      "login": "Login",
+      "loggingIn": "Logging in..."
+    }
+  },
+  "messages": {
+    "loginSuccess": "Login successful",
+    "loginError": "Login failed",
+    "logoutSuccess": "Logout successful",
+    "logoutError": "Logout failed",
+    "fetchUserError": "Failed to fetch user",
+    "refreshSessionError": "Failed to refresh session",
+    "networkError": "Network error occurred",
+    "unauthorized": "Unauthorized"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "defaultUser": "Pengguna",
+  "welcome": "Selamat datang di Sistem Admin RBAC",
+  "greeting": {
+    "morning": "Selamat Pagi",
+    "afternoon": "Selamat Siang",
+    "evening": "Selamat Malam"
+  },
+  "stats": {
+    "totalUsers": "Total Pengguna",
+    "totalUsersDesc": "Semua pengguna terdaftar",
+    "activeUsers": "Pengguna Aktif",
+    "activeUsersDesc": "Pengguna yang saat ini aktif",
+    "totalRoles": "Total Peran",
+    "totalRolesDesc": "Peran yang ditentukan dalam sistem",
+    "permissions": "Izin",
+    "permissionsDesc": "Total izin"
+  },
+  "quickActions": {
+    "title": "Aksi Cepat",
+    "manageUsers": "Kelola Pengguna",
+    "manageUsersDesc": "Tambah, edit, atau hapus pengguna",
+    "rolePermissions": "Peran & Izin",
+    "rolePermissionsDesc": "Kelola peran dan izin mereka"
+  },
+  "userDistribution": {
+    "title": "Distribusi Pengguna",
+    "total": "Total: {total} pengguna",
+    "admin": "Admin",
+    "manager": "Manajer",
+    "user": "Pengguna",
+    "guest": "Tamu"
+  }
+}

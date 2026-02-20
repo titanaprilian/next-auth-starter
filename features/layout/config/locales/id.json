@@ -1,0 +1,9 @@
+{
+  "dashboard": "Dashboard",
+  "management": "Manajemen",
+  "users": "Pengguna",
+  "roles": "Peran & Izin",
+  "settings": "Pengaturan",
+  "systemName": "RBAC Admin",
+  "systemVersion": "v1.0"
+}

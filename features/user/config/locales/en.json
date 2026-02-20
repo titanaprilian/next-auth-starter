@@ -1,0 +1,71 @@
+{
+  "label": "user",
+  "pageTitle": "User Management",
+  "description": "Manage user accounts and their permissions",
+  "filterDescription": "Search and filter users",
+  "searchPlaceholder": "Search users...",
+  "add": {
+    "title": "Add New User",
+    "description": "Fill in the information below to create a new user account."
+  },
+  "edit": {
+    "title": "Edit User",
+    "description": "Update the user information below."
+  },
+  "view": {
+    "title": "User Details",
+    "description": "View the user's account information."
+  },
+  "delete": {
+    "title": "Delete User",
+    "description": "Are you sure you want to delete this user? This action cannot be undone.",
+    "confirmButton": "Delete User"
+  },
+  "fields": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status"
+  },
+  "pagination": {
+    "showing": "Showing {start} to {end} of {total} entries",
+    "rows": "Rows"
+  },
+  "form": {
+    "name": {
+      "label": "Full Name",
+      "placeholder": "Enter full name"
+    },
+    "email": {
+      "label": "Email Address",
+      "placeholder": "Enter email address"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter password",
+      "hintNew": "Password must be at least 6 characters",
+      "hintEdit": "Leave blank if you don't want to change the password"
+    },
+    "role": {
+      "label": "Role",
+      "placeholder": "Select role"
+    },
+    "status": {
+      "label": "Status",
+      "placeholder": "Select status"
+    },
+    "resetButton": "Reset",
+    "saveButton": "Save Changes",
+    "savingText": "Saving..."
+  },
+  "table": {
+    "no": "No",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "noResults": "No users found"
+  }
+}

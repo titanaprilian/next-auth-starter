@@ -23,14 +23,24 @@ This document provides context for implementing new features in this Next.js app
 ├── components/           # Shared UI components
 ├── features/             # Feature-based organization
 │   ├── auth/            # Authentication feature
+│   │   └── config/
+│   │       └── locales/ # Translations (en, es, id)
 │   ├── dashboard/       # Dashboard feature
+│   │   └── config/
+│   │       └── locales/
 │   ├── layout/          # Layout components (Navbar, Sidebar)
+│   │   └── config/
+│   │       └── locales/
 │   ├── rbac/            # RBAC feature
+│   │   └── config/
+│   │       └── locales/
 │   └── user/            # User management feature
+│       └── config/
+│           └── locales/ # Translations (en, es, id)
 ├── hooks/               # Shared React hooks
 ├── lib/                 # Utilities
 │   └── i18n/           # Internationalization
-├── messages/            # Translation JSON files (en, es, id)
+├── messages/            # Common translation JSON files (en, es, id)
 └── public/              # Static assets
 ```
 
@@ -58,9 +68,12 @@ features/[feature-name]/
 
 ### i18n Implementation
 
-1. **Translation Files**: `messages/{locale}.json`
-2. **Config Files**: Each feature has a config file with `*Key` properties pointing to translation keys
-3. **useTranslation Hook**: Custom hook from `@/lib/i18n/useTranslation`
+Translations are organized per feature for better modularity and to avoid merge conflicts:
+
+1. **Common translations**: `messages/{locale}.json` (shared across features)
+2. **Feature translations**: `features/{feature}/config/locales/{locale}.json`
+3. **Config Files**: Each feature has a config file with `*Key` properties pointing to translation keys
+4. **useTranslation Hook**: Custom hook from `@/lib/i18n/useTranslation`
 
 Example:
 ```tsx
@@ -76,8 +89,9 @@ const t = useTranslations();
 
 To add a new language:
 1. Add locale to `I18nProvider.tsx`
-2. Create `messages/{locale}.json`
-3. Add to `LanguageSwitcher.tsx`
+2. Create `messages/{locale}.json` (common translations)
+3. Create `features/{feature}/config/locales/{locale}.json` for each feature
+4. Add to `LanguageSwitcher.tsx`
 
 ### API Pattern
 
@@ -154,22 +168,26 @@ pnpm lint        # Run ESLint
 
 1. Create directory in `features/`
 2. Follow the feature structure pattern
-3. Add translations to `messages/` files
+3. Create config locales: `features/{feature}/config/locales/{en,es,id}.json`
 4. Create config file with translation keys
 5. Export components in `index.ts`
+6. Update `I18nProvider.tsx` to import and merge the new feature translations
 
 ### Adding Translations
 
-1. Add keys to `messages/en.json` (base)
-2. Add keys to `messages/es.json` (Spanish)
-3. Add keys to `messages/id.json` (Indonesian)
+1. Add keys to `features/{feature}/config/locales/en.json` (base)
+2. Add keys to `features/{feature}/config/locales/es.json` (Spanish)
+3. Add keys to `features/{feature}/config/locales/id.json` (Indonesian)
 4. Use `t("key.path")` in components
+
+For common translations shared across features, add to `messages/{locale}.json`
 
 ### Adding a New Language
 
 1. Update `I18nProvider.tsx` to include the locale
-2. Create `messages/{locale}.json`
-3. Add language option to `LanguageSwitcher.tsx`
+2. Create `messages/{locale}.json` (common translations)
+3. Add locale files to each feature: `features/{feature}/config/locales/{locale}.json`
+4. Add language option to `LanguageSwitcher.tsx`
 
 ### Adding API Endpoints
 

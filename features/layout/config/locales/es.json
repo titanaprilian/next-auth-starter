@@ -1,0 +1,9 @@
+{
+  "dashboard": "Panel",
+  "management": "Gestión",
+  "users": "Usuarios",
+  "roles": "Roles y Permisos",
+  "settings": "Configuración",
+  "systemName": "RBAC Admin",
+  "systemVersion": "v1.0"
+}

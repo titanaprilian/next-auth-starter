@@ -1,0 +1,34 @@
+{
+  "defaultUser": "User",
+  "welcome": "Welcome to the RBAC Admin System",
+  "greeting": {
+    "morning": "Good Morning",
+    "afternoon": "Good Afternoon",
+    "evening": "Good Evening"
+  },
+  "stats": {
+    "totalUsers": "Total Users",
+    "totalUsersDesc": "All registered users",
+    "activeUsers": "Active Users",
+    "activeUsersDesc": "Currently active users",
+    "totalRoles": "Total Roles",
+    "totalRolesDesc": "Defined roles in the system",
+    "permissions": "Permissions",
+    "permissionsDesc": "Total permissions"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "manageUsers": "Manage Users",
+    "manageUsersDesc": "Add, edit, or remove users",
+    "rolePermissions": "Role & Permissions",
+    "rolePermissionsDesc": "Manage roles and their permissions"
+  },
+  "userDistribution": {
+    "title": "User Distribution",
+    "total": "Total: {total} users",
+    "admin": "Admin",
+    "manager": "Manager",
+    "user": "User",
+    "guest": "Guest"
+  }
+}
