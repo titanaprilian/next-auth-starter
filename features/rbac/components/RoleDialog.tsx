@@ -101,7 +101,6 @@ export function RoleDialog({
         {mode === "view" ? (
           <RoleView
             role={roleData || selectedRole}
-            features={featuresData?.data}
             isLoading={isViewLoading}
           />
         ) : (

@@ -47,7 +47,10 @@
     },
     "permissions": {
       "label": "Izin",
-      "placeholder": "Pilih izin"
+      "placeholder": "Pilih izin",
+      "selected": "{count} fitur dipilih",
+      "selectedPlural": "{count} fitur dipilih",
+      "done": "Selesai"
     },
     "resetButton": "Reset",
     "saveButton": "Simpan Perubahan",

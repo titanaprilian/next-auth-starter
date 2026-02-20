@@ -31,7 +31,7 @@ import {
 import { Feature } from "../types";
 import { roleManagementConfig } from "../config/roleManagement";
 import { useTranslations } from "@/lib/i18n/useTranslation";
-import { Settings2, ChevronRight, Check } from "lucide-react";
+import { Settings2, Check } from "lucide-react";
 
 interface RoleFormProps {
   defaultValues?: RoleFormData;
@@ -156,7 +156,11 @@ export function RoleForm({
   const defaultValuesRef = useRef(defaultValues);
 
   useEffect(() => {
-    if (!isSubmittingRef.current && defaultValues && defaultValuesRef.current !== defaultValues) {
+    if (
+      !isSubmittingRef.current &&
+      defaultValues &&
+      defaultValuesRef.current !== defaultValues
+    ) {
       defaultValuesRef.current = defaultValues;
       form.reset(defaultValues);
     }
@@ -229,12 +233,24 @@ export function RoleForm({
               <Table>
                 <TableHeader>
                   <TableRow className="bg-muted/50">
-                    <TableHead className="w-[200px]">Feature</TableHead>
-                    <TableHead className="text-center">Create</TableHead>
-                    <TableHead className="text-center">Read</TableHead>
-                    <TableHead className="text-center">Update</TableHead>
-                    <TableHead className="text-center">Delete</TableHead>
-                    <TableHead className="text-center">Print</TableHead>
+                    <TableHead className="w-[200px]">
+                      {t("role.fields.name")}
+                    </TableHead>
+                    <TableHead className="text-center">
+                      {t("role.permission.create")}
+                    </TableHead>
+                    <TableHead className="text-center">
+                      {t("role.permission.read")}
+                    </TableHead>
+                    <TableHead className="text-center">
+                      {t("role.permission.update")}
+                    </TableHead>
+                    <TableHead className="text-center">
+                      {t("role.permission.delete")}
+                    </TableHead>
+                    <TableHead className="text-center">
+                      {t("role.permission.print")}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -283,12 +299,13 @@ export function RoleForm({
                   >
                     <span>
                       {watchedPermissions.length > 0
-                        ? `${watchedPermissions.length} ${
+                        ? t(
                             watchedPermissions.length === 1
-                              ? "feature"
-                              : "features"
-                          } selected`
-                        : "Select permissions"}
+                              ? formConfig.permissions.selectedKey
+                              : formConfig.permissions.selectedPluralKey,
+                            { count: watchedPermissions.length },
+                          )
+                        : t(formConfig.permissions.placeholderKey)}
                     </span>
                     <Settings2 className="h-4 w-4 ml-2" />
                   </Button>
@@ -319,11 +336,12 @@ export function RoleForm({
                             >
                               {feature.name}
                             </label>
-                            <ChevronRight className="h-4 w-4 text-muted-foreground" />
                           </div>
                           <div className="grid grid-cols-5 gap-1 pt-1">
                             {PERMISSION_ACTIONS.map((action) => {
-                              const actionLabel = action.replace("can", "");
+                              const actionKey = action
+                                .replace("can", "")
+                                .toLowerCase();
                               return (
                                 <label
                                   key={action}
@@ -344,8 +362,8 @@ export function RoleForm({
                                     disabled={isLoading}
                                     id={`mobile-${feature.id}-${action}`}
                                   />
-                                  <span className="text-[10px] text-muted-foreground mt-0.5 capitalize">
-                                    {actionLabel}
+                                  <span className="text-[10px] text-muted-foreground mt-0.5">
+                                    {t(`role.permission.${actionKey}`)}
                                   </span>
                                 </label>
                               );
@@ -361,7 +379,7 @@ export function RoleForm({
                       onClick={() => setPermissionsDialogOpen(false)}
                     >
                       <Check className="h-4 w-4 mr-1" />
-                      Done
+                      {t(formConfig.permissions.doneKey)}
                     </Button>
                   </div>
                 </DialogContent>

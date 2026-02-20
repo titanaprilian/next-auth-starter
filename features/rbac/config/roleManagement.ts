@@ -63,6 +63,9 @@ export const roleManagementConfig = {
     permissions: {
       labelKey: "role.form.permissions.label",
       placeholderKey: "role.form.permissions.placeholder",
+      selectedKey: "role.form.permissions.selected",
+      selectedPluralKey: "role.form.permissions.selectedPlural",
+      doneKey: "role.form.permissions.done",
     },
     resetButton: "role.form.resetButton",
     saveButton: "role.form.saveButton",

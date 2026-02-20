@@ -47,7 +47,10 @@
     },
     "permissions": {
       "label": "Permissions",
-      "placeholder": "Select permissions"
+      "placeholder": "Select permissions",
+      "selected": "{count} feature selected",
+      "selectedPlural": "{count} features selected",
+      "done": "Done"
     },
     "resetButton": "Reset",
     "saveButton": "Save Changes",

@@ -178,7 +178,7 @@ export function SidebarNav({ isOpen, onClose }: { isOpen?: boolean; onClose?: ()
         </nav>
 
         {/* System Info Footer */}
-        <div className="border-t border-white/10 px-6 py-4">
+        <div className="border-t border-white/10 px-6 py-4 pb-20 lg:pb-4">
           <p className="text-sm font-medium text-white/80">
             {t(sidebarFooterConfig.nameKey)}
           </p>
