@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTranslations } from "@/lib/i18n/useTranslation";
 import { Eye, Pencil, Trash2, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
 import { TablePagination } from "@/components/ui/table-pagination";
 import { User } from "../types";
 import { userManagementConfig } from "../config/userManagement";
+import { UserCardsList } from "./UserCardsList";
 
 export interface UsersTableProps {
   data: User[];
@@ -42,25 +43,25 @@ const TableSkeleton = () => (
   <>
     {[...Array(5)].map((_, i) => (
       <TableRow key={i}>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-4 w-[30px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-4 w-[120px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-4 w-[180px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-6 w-[80px] rounded-full" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-6 w-[70px] rounded-full" />
         </TableCell>
-        <TableCell>
+        <TableCell className="hidden md:table-cell px-4 py-3">
           <Skeleton className="h-4 w-[100px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <div className="flex gap-1">
             <Skeleton className="h-8 w-8" />
             <Skeleton className="h-8 w-8" />
@@ -90,6 +91,7 @@ export function UsersTable({
   const t = useTranslations();
   const [viewingId, setViewingId] = useState<string | null>(null);
   const tableConfig = userManagementConfig.table;
+  const tableRef = useRef<HTMLDivElement>(null);
 
   // Default to true if permissions not provided (backward compatibility)
   const canView = permissions?.canRead ?? true;
@@ -108,30 +110,31 @@ export function UsersTable({
   return (
     <Card>
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <Table>
+        {/* Desktop Table View - hidden on mobile, visible on lg+ */}
+        <div ref={tableRef} className="hidden md:block relative w-full overflow-auto">
+          <Table className="w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[50px] px-4">
+                <TableHead className="w-[50px] px-4 py-3">
                   {t(tableConfig.no)}
                 </TableHead>
-                <TableHead className="w-[20%] px-4">
+                <TableHead className="min-w-[120px] px-4 py-3">
                   {t(tableConfig.name)}
                 </TableHead>
-                <TableHead className="w-[25%] px-4">
+                <TableHead className="min-w-[180px] px-4 py-3">
                   {t(tableConfig.email)}
                 </TableHead>
-                <TableHead className="w-[15%] px-4">
+                <TableHead className="min-w-[100px] px-4 py-3">
                   {t(tableConfig.role)}
                 </TableHead>
-                <TableHead className="w-[15%] px-4">
+                <TableHead className="min-w-[100px] px-4 py-3">
                   {t(tableConfig.status)}
                 </TableHead>
-                <TableHead className="w-[15%] px-4">
+                <TableHead className="hidden md:table-cell min-w-[120px] px-4 py-3">
                   {t(tableConfig.createdAt)}
                 </TableHead>
                 {showActions && (
-                  <TableHead className="w-[10%] px-4">
+                  <TableHead className="w-[100px] px-4 py-3">
                     {t(tableConfig.actions)}
                   </TableHead>
                 )}
@@ -152,21 +155,21 @@ export function UsersTable({
               ) : (
                 data.map((user, index) => (
                   <TableRow key={user.id}>
-                    <TableCell className="px-4">
+                    <TableCell className="px-4 py-3">
                       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-branding-dark text-white text-xs">
                         {(page - 1) * limit + index + 1}
                       </span>
                     </TableCell>
-                    <TableCell className="font-medium px-4">
+                    <TableCell className="font-medium px-4 py-3">
                       {user.name}
                     </TableCell>
-                    <TableCell className="text-muted-foreground px-4">
+                    <TableCell className="text-muted-foreground px-4 py-3">
                       {user.email}
                     </TableCell>
-                    <TableCell className="px-4">
+                    <TableCell className="px-4 py-3">
                       <Badge variant="secondary">{user.roleName}</Badge>
                     </TableCell>
-                    <TableCell className="px-4">
+                    <TableCell className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <Circle
                           className={`h-2.5 w-2.5 fill-current ${
@@ -184,11 +187,11 @@ export function UsersTable({
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-muted-foreground px-4">
+                    <TableCell className="hidden md:table-cell text-muted-foreground px-4 py-3">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </TableCell>
                     {showActions && (
-                      <TableCell className="px-4">
+                      <TableCell className="px-4 py-3">
                         <div className="flex items-center gap-1">
                           {canView && (
                             <Button
@@ -233,6 +236,33 @@ export function UsersTable({
           </Table>
         </div>
 
+        {/* Mobile Cards View - visible on mobile, hidden on lg+ */}
+        <div ref={tableRef} className="md:hidden p-4">
+          {isLoading ? (
+            <div className="flex flex-col gap-4">
+              {[...Array(5)].map((_, i) => (
+                <Card key={i}>
+                  <CardContent className="p-4">
+                    <Skeleton className="h-4 w-[120px] mb-2" />
+                    <Skeleton className="h-4 w-[180px] mb-2" />
+                    <Skeleton className="h-4 w-[100px]" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <UserCardsList
+              data={data}
+              page={page}
+              limit={limit}
+              onView={onView}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              permissions={permissions}
+            />
+          )}
+        </div>
+
         <TablePagination
           page={page}
           limit={limit}
@@ -241,6 +271,7 @@ export function UsersTable({
           onLimitChange={onLimitChange}
           showingText={t(userManagementConfig.pagination.showingKey)}
           rowsText={t(userManagementConfig.pagination.rowsKey)}
+          scrollRef={tableRef}
         />
       </CardContent>
     </Card>

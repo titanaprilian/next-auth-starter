@@ -62,7 +62,9 @@ export function useCreateRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: RoleFormData): Promise<Role> => {
+    mutationFn: async (
+      data: RoleFormData,
+    ): Promise<{ role: Role; message: string }> => {
       return createRole(data);
     },
     onSuccess: () => {
@@ -81,7 +83,7 @@ export function useUpdateRole() {
     }: {
       id: string;
       data: RoleFormData;
-    }): Promise<Role> => {
+    }): Promise<{ role: Role; message: string }> => {
       return updateRole(id, data);
     },
     onSuccess: () => {

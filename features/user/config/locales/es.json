@@ -4,6 +4,11 @@
   "description": "Administra las cuentas de usuario y sus permisos",
   "filterDescription": "Buscar y filtrar usuarios",
   "searchPlaceholder": "Buscar usuarios...",
+  "button": {
+    "view": "Ver",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
   "add": {
     "title": "Agregar Nuevo Usuario",
     "description": "Completa la información a continuación para crear una nueva cuenta de usuario."

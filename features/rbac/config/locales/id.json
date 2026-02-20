@@ -4,6 +4,11 @@
   "description": "Kelola peran dan izin akses mereka",
   "filterDescription": "Cari dan filter peran",
   "searchPlaceholder": "Cari peran...",
+  "button": {
+    "view": "Lihat",
+    "edit": "Edit",
+    "delete": "Hapus"
+  },
   "add": {
     "title": "Tambah Peran Baru",
     "description": "Isi informasi di bawah untuk membuat peran baru."

@@ -32,7 +32,10 @@ let refreshSubscriber: ((token: string) => void) | null = null;
 let currentLocale: string = "en";
 let isRefreshing = false;
 let isLoggedOut = getLogoutState();
-let failedQueue: Array<{ resolve: (value: unknown) => void; reject: (reason?: unknown) => void }> = [];
+let failedQueue: Array<{
+  resolve: (value: unknown) => void;
+  reject: (reason?: unknown) => void;
+}> = [];
 
 /**
  * Processes queued requests after token refresh completes.
@@ -96,6 +99,19 @@ export const resetAuthState = () => {
 export const clearLogoutState = () => {
   isLoggedOut = false;
   setLogoutState(false);
+};
+
+/**
+ * Maps short locale code to full locale format for Accept-Language header.
+ * e.g., "id" -> "id-ID", "es" -> "es-ES", "en" -> "en-US"
+ */
+const mapToFullLocale = (locale: string): string => {
+  const localeMap: Record<string, string> = {
+    en: "en-US",
+    es: "es-ES",
+    id: "id-ID",
+  };
+  return localeMap[locale] || locale;
 };
 
 /**
@@ -165,7 +181,7 @@ const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
     }
 
     if (config.headers) {
-      config.headers["accept-language"] = currentLocale;
+      config.headers["accept-language"] = mapToFullLocale(currentLocale);
     }
 
     return config;
@@ -184,10 +200,7 @@ const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
         return Promise.reject(error);
       }
 
-      if (
-        error.response?.status === 401 &&
-        !originalRequest._retry
-      ) {
+      if (error.response?.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject });
@@ -217,7 +230,10 @@ const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
           processQueue(refreshError, null);
           isRefreshing = false;
 
-          if ((refreshError as { response?: { status: number } })?.response?.status === 401) {
+          if (
+            (refreshError as { response?: { status: number } })?.response
+              ?.status === 401
+          ) {
             forceRedirectToLogin();
           }
 
@@ -239,7 +255,8 @@ apiAxiosInterceptor(ApiAxios);
  */
 Axios.interceptors.request.use((config) => {
   const logoutState = getLogoutState();
-  const isPublicEndpoint = config.url?.includes("login") || config.url?.includes("register");
+  const isPublicEndpoint =
+    config.url?.includes("login") || config.url?.includes("register");
 
   if ((logoutState || isLoggedOut) && !isPublicEndpoint) {
     return Promise.reject(new Error("Session expired"));
@@ -250,7 +267,7 @@ Axios.interceptors.request.use((config) => {
   }
 
   if (config.headers) {
-    config.headers["accept-language"] = currentLocale;
+    config.headers["accept-language"] = mapToFullLocale(currentLocale);
   }
 
   return config;
@@ -272,7 +289,8 @@ Axios.interceptors.response.use(
     }
 
     const isPublicEndpoint =
-      originalRequest.url?.includes("login") || originalRequest.url?.includes("register");
+      originalRequest.url?.includes("login") ||
+      originalRequest.url?.includes("register");
 
     if ((isLoggedOut || getLogoutState()) && !isPublicEndpoint) {
       return Promise.reject(error);

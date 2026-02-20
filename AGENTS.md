@@ -93,6 +93,78 @@ To add a new language:
 3. Create `features/{feature}/config/locales/{locale}.json` for each feature
 4. Add to `LanguageSwitcher.tsx`
 
+#### Backend i18n Support
+
+The frontend sends the current locale to the backend via the `accept-language` header:
+
+1. **Axios Interceptor** (`app/utils/axios.ts`): Automatically adds `accept-language` header to all API requests
+2. **Locale Mapping**: Internal locale codes are mapped to full locale format:
+   - `id` → `id-ID`
+   - `es` → `es-ES`
+   - `en` → `en-US`
+3. **I18nProvider**: Syncs current locale to axios via `setApiLocale()`
+
+#### Next.js API Routes
+
+When creating Next.js API routes that proxy to a backend, always forward the `accept-language` header:
+
+```typescript
+// app/api/users/route.ts
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+  const acceptLanguage = request.headers.get("accept-language");
+
+  const response = await fetch(API_ENDPOINTS.USERS.LIST, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authHeader && { Authorization: authHeader }),
+      ...(acceptLanguage && { "accept-language": acceptLanguage }),
+    },
+    credentials: "include",
+  });
+  // ...
+}
+```
+
+#### Using Localized Backend Responses
+
+To display localized messages from the backend in toasts, return the message from API functions:
+
+```typescript
+// features/user/services/userApi.ts
+export async function updateUser(
+  id: string,
+  data: UserFormData,
+): Promise<{ user: User; message: string }> {
+  const { data: result } = await ApiAxios.patch<ApiUserResponse>(
+    `/users/${id}`,
+    payload,
+  );
+
+  return {
+    user: result.data,
+    message: result.message,
+  };
+}
+```
+
+Then use it in the mutation handler:
+```typescript
+// features/user/hooks/useUserManagement.ts
+const handleUpdateUser = (data: UserFormData) => {
+  updateUser.mutate(
+    { id: dialog.selectedUser.id, data },
+    {
+      onSuccess: (response) => {
+        dialog.close();
+        toast.success(response.message || "User updated successfully");
+      },
+    },
+  );
+};
+```
+
 ### API Pattern
 
 ```typescript
@@ -100,6 +172,50 @@ To add a new language:
 export async function fetchUsers(filters: Partial<UserFilters>) {
   const { data } = await ApiAxios.get<ApiUsersResponse>("/users", { params });
   return data;
+}
+```
+
+#### Returning Localized Messages from Backend
+
+For create/update/delete operations that need to show localized toast messages, return both data and message:
+
+```typescript
+// features/user/services/userApi.ts
+export async function createUser(
+  data: UserFormData,
+): Promise<{ user: User; message: string }> {
+  const { data: result } = await ApiAxios.post<ApiUserResponse>("/users", payload);
+
+  return {
+    user: result.data,
+    message: result.message,
+  };
+}
+
+export async function updateUser(
+  id: string,
+  data: UserFormData,
+): Promise<{ user: User; message: string }> {
+  const { data: result } = await ApiAxios.patch<ApiUserResponse>(
+    `/users/${id}`,
+    payload,
+  );
+
+  return {
+    user: result.data,
+    message: result.message,
+  };
+}
+
+export async function deleteUser(
+  id: string,
+): Promise<{ success: boolean; message: string }> {
+  const { data } = await ApiAxios.delete<ApiDeleteResponse>(`/users/${id}`);
+
+  return {
+    success: !data.error,
+    message: data.message,
+  };
 }
 ```
 
@@ -210,13 +326,23 @@ export const API_ENDPOINTS = {
 2. **Create Next.js API route** - Create `app/api/{featureName}/route.ts` to proxy requests to backend:
 ```typescript
 // app/api/users/route.ts
-import { NextResponse } from "next/server";
-import { ApiAxios } from "@utils/axios";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  // ... handle params
-  const { data } = await ApiAxios.get(API_ENDPOINTS.USERS.LIST, { params });
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+  const acceptLanguage = request.headers.get("accept-language");
+
+  const response = await fetch(API_ENDPOINTS.USERS.LIST, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authHeader && { Authorization: authHeader }),
+      ...(acceptLanguage && { "accept-language": acceptLanguage }),
+    },
+    credentials: "include",
+  });
+
+  const data = await response.json();
   return NextResponse.json(data);
 }
 ```

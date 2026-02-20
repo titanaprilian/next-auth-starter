@@ -4,6 +4,11 @@
   "description": "Manage user accounts and their permissions",
   "filterDescription": "Search and filter users",
   "searchPlaceholder": "Search users...",
+  "button": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
   "add": {
     "title": "Add New User",
     "description": "Fill in the information below to create a new user account."

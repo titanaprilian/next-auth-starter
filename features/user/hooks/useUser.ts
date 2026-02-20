@@ -64,7 +64,9 @@ export function useCreateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: UserFormData): Promise<User> => {
+    mutationFn: async (
+      data: UserFormData,
+    ): Promise<{ user: User; message: string }> => {
       return createUser(data);
     },
     onSuccess: () => {
@@ -92,7 +94,7 @@ export function useUpdateUser() {
     }: {
       id: string;
       data: UserFormData;
-    }): Promise<User> => {
+    }): Promise<{ user: User; message: string }> => {
       return updateUser(id, data);
     },
     onSuccess: () => {

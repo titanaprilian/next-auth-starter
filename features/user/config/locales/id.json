@@ -4,6 +4,11 @@
   "description": "Kelola akun pengguna dan izin mereka",
   "filterDescription": "Cari dan filter pengguna",
   "searchPlaceholder": "Cari pengguna...",
+  "button": {
+    "view": "Lihat",
+    "edit": "Edit",
+    "delete": "Hapus"
+  },
   "add": {
     "title": "Tambah Pengguna Baru",
     "description": "Isi informasi di bawah untuk membuat akun pengguna baru."

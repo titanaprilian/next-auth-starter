@@ -64,6 +64,24 @@ type Locale = "en" | "es" | "id";
 
 const supportedLocales: Locale[] = ["en", "es", "id"];
 
+const getInitialLocale = (): Locale => {
+  if (typeof window === "undefined") return "en";
+
+  const cookieLocale = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("locale="))
+    ?.split("=")[1] as Locale;
+
+  if (cookieLocale && supportedLocales.includes(cookieLocale)) {
+    return cookieLocale;
+  }
+
+  const browserLang = navigator.language.split("-")[0];
+  return supportedLocales.includes(browserLang as Locale)
+    ? (browserLang as Locale)
+    : "en";
+};
+
 interface I18nContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
@@ -73,24 +91,7 @@ interface I18nContextType {
 const I18nContext = createContext<I18nContextType | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
-
-  useEffect(() => {
-    const cookieLocale = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("locale="))
-      ?.split("=")[1] as Locale;
-
-    if (cookieLocale && supportedLocales.includes(cookieLocale)) {
-      setLocaleState(cookieLocale);
-    } else {
-      const browserLang = navigator.language.split("-")[0];
-      const supportedLang = supportedLocales.includes(browserLang as Locale)
-        ? browserLang
-        : "en";
-      setLocaleState(supportedLang as Locale);
-    }
-  }, []);
+  const [locale, setLocaleState] = useState<Locale>(getInitialLocale());
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);

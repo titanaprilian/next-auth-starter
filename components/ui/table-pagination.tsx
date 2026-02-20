@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
+import { useRef, useEffect } from "react";
 
 export interface TablePaginationProps {
   page: number;
@@ -23,6 +24,7 @@ export interface TablePaginationProps {
   onLimitChange: (limit: number) => void;
   showingText: string;
   rowsText: string;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const getPageNumbers = (
@@ -85,9 +87,20 @@ export function TablePagination({
   onLimitChange,
   showingText,
   rowsText,
+  scrollRef,
 }: TablePaginationProps) {
   const totalPages = Math.ceil(total / limit);
   const pageNumbers = getPageNumbers(page, totalPages);
+  const prevPageRef = useRef(page);
+  const paginationRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to table when page changes
+  useEffect(() => {
+    if (prevPageRef.current !== page && scrollRef?.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    prevPageRef.current = page;
+  }, [page, limit, scrollRef]);
 
   // Format showing text with values
   const formattedShowingText = showingText
@@ -96,14 +109,34 @@ export function TablePagination({
     .replace("{total}", String(total));
 
   return (
-    <div className="flex items-center justify-between border-t px-6 py-4">
-      <div className="flex items-center gap-2">
+    <div ref={paginationRef} className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t px-4 sm:px-6 py-4">
+      {/* Showing text - hidden on mobile */}
+      <div className="hidden sm:flex items-center gap-2">
         <span className="text-sm text-muted-foreground">
           {formattedShowingText}
         </span>
       </div>
 
       <div className="flex items-center gap-2">
+        {/* Rows select - hidden on mobile */}
+        <div className="hidden sm:flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">{rowsText}:</span>
+          <Select
+            value={String(limit)}
+            onValueChange={(value) => onLimitChange(Number(value))}
+          >
+            <SelectTrigger className="w-[70px] h-8">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -163,24 +196,6 @@ export function TablePagination({
           >
             <ChevronsRight className="h-4 w-4" />
           </Button>
-        </div>
-
-        <div className="flex items-center gap-2 ml-4">
-          <span className="text-sm text-muted-foreground">{rowsText}:</span>
-          <Select
-            value={String(limit)}
-            onValueChange={(value) => onLimitChange(Number(value))}
-          >
-            <SelectTrigger className="w-[70px] h-8">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="5">5</SelectItem>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
       </div>
     </div>

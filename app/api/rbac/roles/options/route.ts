@@ -4,12 +4,14 @@ import { API_ENDPOINTS } from "@api/api";
 export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(API_ENDPOINTS.RBAC.ROLES_OPTIONS, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         ...(authHeader && { Authorization: authHeader }),
+        ...(acceptLanguage && { "accept-language": acceptLanguage }),
       },
       credentials: "include",
     });

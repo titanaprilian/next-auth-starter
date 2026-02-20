@@ -29,7 +29,9 @@ export async function fetchUserById(id: string): Promise<User> {
   return data.data;
 }
 
-export async function deleteUser(id: string): Promise<DeleteResponse> {
+export async function deleteUser(
+  id: string,
+): Promise<{ success: boolean; message: string }> {
   const { data } = await ApiAxios.delete<ApiDeleteResponse>(`/users/${id}`);
 
   return {
@@ -38,7 +40,9 @@ export async function deleteUser(id: string): Promise<DeleteResponse> {
   };
 }
 
-export async function createUser(data: UserFormData): Promise<User> {
+export async function createUser(
+  data: UserFormData,
+): Promise<{ user: User; message: string }> {
   const { data: result } = await ApiAxios.post<ApiUserResponse>("/users", {
     name: data.name,
     email: data.email,
@@ -47,13 +51,16 @@ export async function createUser(data: UserFormData): Promise<User> {
     isActive: data.status === "active",
   });
 
-  return result.data;
+  return {
+    user: result.data,
+    message: result.message,
+  };
 }
 
 export async function updateUser(
   id: string,
   data: UserFormData,
-): Promise<User> {
+): Promise<{ user: User; message: string }> {
   const payload: Record<string, unknown> = {
     name: data.name,
     email: data.email,
@@ -70,7 +77,10 @@ export async function updateUser(
     payload,
   );
 
-  return result.data;
+  return {
+    user: result.data,
+    message: result.message,
+  };
 }
 
 export async function fetchRoles(): Promise<ApiRolesResponse> {

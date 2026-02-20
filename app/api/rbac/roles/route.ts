@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     if (search) queryParams.set("search", search);
 
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(
       `${API_ENDPOINTS.RBAC.ROLES_LIST}?${queryParams.toString()}`,
@@ -22,6 +23,7 @@ export async function GET(request: NextRequest) {
         headers: {
           "Content-Type": "application/json",
           ...(authHeader && { Authorization: authHeader }),
+          ...(acceptLanguage && { "accept-language": acceptLanguage }),
         },
         credentials: "include",
       }
@@ -46,12 +48,14 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(API_ENDPOINTS.RBAC.ROLES_CREATE, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         ...(authHeader && { Authorization: authHeader }),
+        ...(acceptLanguage && { "accept-language": acceptLanguage }),
       },
       body: JSON.stringify(body),
       credentials: "include",

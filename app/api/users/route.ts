@@ -16,12 +16,14 @@ export async function GET(request: NextRequest) {
     if (role && role !== "all") queryParams.set("roleId", role);
 
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(`${API_ENDPOINTS.USERS.LIST}?${queryParams.toString()}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         ...(authHeader && { Authorization: authHeader }),
+        ...(acceptLanguage && { "accept-language": acceptLanguage }),
       },
       credentials: "include",
     });
@@ -45,12 +47,14 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(API_ENDPOINTS.USERS.CREATE, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         ...(authHeader && { Authorization: authHeader }),
+        ...(acceptLanguage && { "accept-language": acceptLanguage }),
       },
       body: JSON.stringify(body),
       credentials: "include",

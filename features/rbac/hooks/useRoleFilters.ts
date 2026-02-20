@@ -55,6 +55,7 @@ export function useRoleFilters() {
     (value: string) => {
       router.push(
         `?${createQueryString({ search: value, page: DEFAULT_PAGE })}`,
+        { scroll: false },
       );
     },
     [router, createQueryString],
@@ -62,7 +63,7 @@ export function useRoleFilters() {
 
   const setPage = useCallback(
     (value: number) => {
-      router.push(`?${createQueryString({ page: value })}`);
+      router.push(`?${createQueryString({ page: value })}`, { scroll: false });
     },
     [router, createQueryString],
   );
@@ -71,6 +72,7 @@ export function useRoleFilters() {
     (value: number) => {
       router.push(
         `?${createQueryString({ limit: value, page: DEFAULT_PAGE })}`,
+        { scroll: false },
       );
     },
     [router, createQueryString],

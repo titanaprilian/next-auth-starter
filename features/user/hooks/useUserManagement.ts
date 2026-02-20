@@ -31,9 +31,9 @@ export function useUserManagement() {
 
   const handleDeleteUser = (userId: string) => {
     deleteUser.mutate(userId, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         deleteDialog.close();
-        toast.success("User deleted successfully");
+        toast.success(response.message || "User deleted successfully");
       },
       onError: (error) => {
         const { message } = extractApiError(error);
@@ -44,9 +44,9 @@ export function useUserManagement() {
 
   const handleCreateUser = (data: UserFormData) => {
     createUser.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         dialog.close();
-        toast.success("User created successfully");
+        toast.success(response.message || "User created successfully");
       },
       onError: (error) => {
         const { message, issues } = extractApiError(error);
@@ -66,9 +66,9 @@ export function useUserManagement() {
     updateUser.mutate(
       { id: dialog.selectedUser.id, data },
       {
-        onSuccess: () => {
+        onSuccess: (response) => {
           dialog.close();
-          toast.success("User updated successfully");
+          toast.success(response.message || "User updated successfully");
         },
         onError: (error) => {
           const { message, issues } = extractApiError(error);

@@ -4,6 +4,11 @@
   "description": "Administra los roles y sus permisos de acceso",
   "filterDescription": "Buscar y filtrar roles",
   "searchPlaceholder": "Buscar roles...",
+  "button": {
+    "view": "Ver",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
   "add": {
     "title": "Agregar Nuevo Rol",
     "description": "Completa la información a continuación para crear un nuevo rol."

@@ -28,9 +28,9 @@ export function useRoleManagement() {
 
   const handleDeleteRole = (roleId: string) => {
     deleteRole.mutate(roleId, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         deleteDialog.close();
-        toast.success("Role deleted successfully");
+        toast.success(response.message || "Role deleted successfully");
       },
       onError: (error) => {
         const { message } = extractApiError(error);
@@ -47,9 +47,9 @@ export function useRoleManagement() {
 
   const handleCreateRole = (data: RoleFormData) => {
     createRole.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         dialog.close();
-        toast.success("Role created successfully");
+        toast.success(response.message || "Role created successfully");
       },
       onError: (error) => {
         const { message, issues } = extractApiError(error);
@@ -69,9 +69,9 @@ export function useRoleManagement() {
     updateRole.mutate(
       { id: dialog.selectedRole.id, data },
       {
-        onSuccess: () => {
+        onSuccess: (response) => {
           dialog.close();
-          toast.success("Role updated successfully");
+          toast.success(response.message || "Role updated successfully");
         },
         onError: (error) => {
           const { message, issues } = extractApiError(error);

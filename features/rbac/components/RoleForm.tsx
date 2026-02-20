@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -21,9 +21,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Feature } from "../types";
 import { roleManagementConfig } from "../config/roleManagement";
 import { useTranslations } from "@/lib/i18n/useTranslation";
+import { Settings2, ChevronRight, Check } from "lucide-react";
 
 interface RoleFormProps {
   defaultValues?: RoleFormData;
@@ -51,6 +59,7 @@ export function RoleForm({
   const t = useTranslations();
   const formConfig = roleManagementConfig.form;
   const isSubmittingRef = useRef(false);
+  const [permissionsDialogOpen, setPermissionsDialogOpen] = useState(false);
 
   const form = useForm<RoleFormData>({
     resolver: zodResolver(roleFormSchema),
@@ -215,50 +224,150 @@ export function RoleForm({
             {t("common.noResults")}
           </p>
         ) : (
-          <div className="border rounded-md">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50">
-                  <TableHead className="w-[200px]">Feature</TableHead>
-                  <TableHead className="text-center">Create</TableHead>
-                  <TableHead className="text-center">Read</TableHead>
-                  <TableHead className="text-center">Update</TableHead>
-                  <TableHead className="text-center">Delete</TableHead>
-                  <TableHead className="text-center">Print</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {features.map((feature) => (
-                  <TableRow key={feature.id}>
-                    <TableCell className="font-medium">
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          checked={isFeatureFullyEnabled(feature.id)}
-                          onCheckedChange={() => toggleFeature(feature.id)}
-                        />
-                        <span>{feature.name}</span>
-                      </div>
-                    </TableCell>
-                    {PERMISSION_ACTIONS.map((action) => (
-                      <TableCell key={action} className="text-center">
-                        <Checkbox
-                          checked={getPermissionValue(feature.id, action)}
-                          onCheckedChange={(checked) =>
-                            updatePermissionAction(
-                              feature.id,
-                              action,
-                              checked as boolean,
-                            )
-                          }
-                          disabled={isLoading}
-                        />
-                      </TableCell>
-                    ))}
+          <>
+            <div className="hidden md:block border rounded-md">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="w-[200px]">Feature</TableHead>
+                    <TableHead className="text-center">Create</TableHead>
+                    <TableHead className="text-center">Read</TableHead>
+                    <TableHead className="text-center">Update</TableHead>
+                    <TableHead className="text-center">Delete</TableHead>
+                    <TableHead className="text-center">Print</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {features.map((feature) => (
+                    <TableRow key={feature.id}>
+                      <TableCell className="font-medium">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            checked={isFeatureFullyEnabled(feature.id)}
+                            onCheckedChange={() => toggleFeature(feature.id)}
+                          />
+                          <span>{feature.name}</span>
+                        </div>
+                      </TableCell>
+                      {PERMISSION_ACTIONS.map((action) => (
+                        <TableCell key={action} className="text-center">
+                          <Checkbox
+                            checked={getPermissionValue(feature.id, action)}
+                            onCheckedChange={(checked) =>
+                              updatePermissionAction(
+                                feature.id,
+                                action,
+                                checked as boolean,
+                              )
+                            }
+                            disabled={isLoading}
+                          />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            <div className="md:hidden">
+              <Dialog
+                open={permissionsDialogOpen}
+                onOpenChange={setPermissionsDialogOpen}
+              >
+                <DialogTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full justify-between"
+                  >
+                    <span>
+                      {watchedPermissions.length > 0
+                        ? `${watchedPermissions.length} ${
+                            watchedPermissions.length === 1
+                              ? "feature"
+                              : "features"
+                          } selected`
+                        : "Select permissions"}
+                    </span>
+                    <Settings2 className="h-4 w-4 ml-2" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-[90vw] max-h-[80vh] sm:max-w-[500px]">
+                  <DialogHeader>
+                    <DialogTitle>
+                      {t(formConfig.permissions.labelKey)}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="max-h-[60vh] overflow-y-auto space-y-3 py-2">
+                    {features.map((feature) => {
+                      const isFull = isFeatureFullyEnabled(feature.id);
+                      return (
+                        <div
+                          key={feature.id}
+                          className="border rounded-lg p-3 space-y-2"
+                        >
+                          <div className="flex items-center justify-between">
+                            <Checkbox
+                              checked={isFull}
+                              onCheckedChange={() => toggleFeature(feature.id)}
+                              id={`mobile-${feature.id}`}
+                            />
+                            <label
+                              htmlFor={`mobile-${feature.id}`}
+                              className="font-medium text-sm flex-1 ml-2 cursor-pointer"
+                            >
+                              {feature.name}
+                            </label>
+                            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <div className="grid grid-cols-5 gap-1 pt-1">
+                            {PERMISSION_ACTIONS.map((action) => {
+                              const actionLabel = action.replace("can", "");
+                              return (
+                                <label
+                                  key={action}
+                                  className="flex flex-col items-center cursor-pointer"
+                                >
+                                  <Checkbox
+                                    checked={getPermissionValue(
+                                      feature.id,
+                                      action,
+                                    )}
+                                    onCheckedChange={(checked) =>
+                                      updatePermissionAction(
+                                        feature.id,
+                                        action,
+                                        checked as boolean,
+                                      )
+                                    }
+                                    disabled={isLoading}
+                                    id={`mobile-${feature.id}-${action}`}
+                                  />
+                                  <span className="text-[10px] text-muted-foreground mt-0.5 capitalize">
+                                    {actionLabel}
+                                  </span>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="flex justify-end pt-2">
+                    <Button
+                      type="button"
+                      onClick={() => setPermissionsDialogOpen(false)}
+                    >
+                      <Check className="h-4 w-4 mr-1" />
+                      Done
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </>
         )}
         {form.formState.errors.permissions && (
           <p className="text-sm text-destructive">

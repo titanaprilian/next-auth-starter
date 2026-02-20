@@ -43,20 +43,25 @@ export async function fetchRoleById(id: string): Promise<Role> {
   return data.data;
 }
 
-export async function createRole(data: RoleFormData): Promise<Role> {
+export async function createRole(
+  data: RoleFormData,
+): Promise<{ role: Role; message: string }> {
   const { data: result } = await ApiAxios.post<ApiRoleResponse>("/rbac/roles", {
     name: data.name,
     description: data.description,
     permissions: data.permissions,
   });
 
-  return result.data;
+  return {
+    role: result.data,
+    message: result.message,
+  };
 }
 
 export async function updateRole(
   id: string,
-  data: RoleFormData
-): Promise<Role> {
+  data: RoleFormData,
+): Promise<{ role: Role; message: string }> {
   const { data: result } = await ApiAxios.patch<ApiRoleResponse>(
     `/rbac/roles/${id}`,
     {
@@ -66,7 +71,10 @@ export async function updateRole(
     }
   );
 
-  return result.data;
+  return {
+    role: result.data,
+    message: result.message,
+  };
 }
 
 export async function deleteRole(id: string): Promise<DeleteResponse> {

@@ -56,6 +56,7 @@ export function useUserFilters() {
     (value: string) => {
       router.push(
         `?${createQueryString({ search: value, page: DEFAULT_PAGE })}`,
+        { scroll: false },
       );
     },
     [router, createQueryString],
@@ -63,14 +64,17 @@ export function useUserFilters() {
 
   const setRole = useCallback(
     (value: string) => {
-      router.push(`?${createQueryString({ role: value, page: DEFAULT_PAGE })}`);
+      router.push(
+        `?${createQueryString({ role: value, page: DEFAULT_PAGE })}`,
+        { scroll: false },
+      );
     },
     [router, createQueryString],
   );
 
   const setPage = useCallback(
     (value: number) => {
-      router.push(`?${createQueryString({ page: value })}`);
+      router.push(`?${createQueryString({ page: value })}`, { scroll: false });
     },
     [router, createQueryString],
   );
@@ -79,6 +83,7 @@ export function useUserFilters() {
     (value: number) => {
       router.push(
         `?${createQueryString({ limit: value, page: DEFAULT_PAGE })}`,
+        { scroll: false },
       );
     },
     [router, createQueryString],

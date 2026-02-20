@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTranslations } from "@/lib/i18n/useTranslation";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import {
 import { TablePagination } from "@/components/ui/table-pagination";
 import { RoleListItem, Role } from "../types";
 import { roleManagementConfig } from "../config/roleManagement";
+import { RoleCardsList } from "./RoleCardsList";
 
 export interface RolesTableProps {
   data: RoleListItem[];
@@ -41,19 +42,19 @@ const TableSkeleton = () => (
   <>
     {[...Array(5)].map((_, i) => (
       <TableRow key={i}>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-4 w-[30px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-4 w-[150px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <Skeleton className="h-4 w-[250px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="hidden md:table-cell px-4 py-3">
           <Skeleton className="h-4 w-[100px]" />
         </TableCell>
-        <TableCell>
+        <TableCell className="px-4 py-3">
           <div className="flex gap-1">
             <Skeleton className="h-8 w-8" />
             <Skeleton className="h-8 w-8" />
@@ -81,6 +82,7 @@ export function RolesTable({
   const t = useTranslations();
   const [viewingId, setViewingId] = useState<string | null>(null);
   const tableConfig = roleManagementConfig.table;
+  const tableRef = useRef<HTMLDivElement>(null);
 
   // Default to true if permissions not provided (backward compatibility)
   const canView = permissions?.canRead ?? true;
@@ -103,30 +105,29 @@ export function RolesTable({
   return (
     <Card>
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <Table>
+        {/* Desktop Table View - hidden on mobile, visible on lg+ */}
+        <div ref={tableRef} className="hidden md:block relative w-full overflow-auto">
+          <Table className="w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[50px] px-4">
-                  {t(tableConfig.no)}
-                </TableHead>
-                <TableHead className="w-[25%] px-4">
+                <TableHead className="w-[50px] px-4 py-3">{t(tableConfig.no)}</TableHead>
+                <TableHead className="min-w-[120px] px-4 py-3">
                   {t(tableConfig.name)}
                 </TableHead>
-                <TableHead className="w-[40%] px-4">
+                <TableHead className="min-w-[180px] px-4 py-3">
                   {t(tableConfig.description)}
                 </TableHead>
-                <TableHead className="w-[15%] px-4">
+                <TableHead className="hidden md:table-cell min-w-[120px] px-4 py-3">
                   {t(tableConfig.createdAt)}
                 </TableHead>
                 {showActions && (
-                  <TableHead className="w-[10%] px-4">
+                  <TableHead className="w-[100px] px-4 py-3">
                     {t(tableConfig.actions)}
                   </TableHead>
                 )}
               </TableRow>
             </TableHeader>
-              <TableBody>
+            <TableBody>
               {isLoading ? (
                 <TableSkeleton />
               ) : data.length === 0 ? (
@@ -141,22 +142,20 @@ export function RolesTable({
               ) : (
                 data.map((role, index) => (
                   <TableRow key={role.id}>
-                    <TableCell className="px-4">
+                    <TableCell className="px-4 py-3">
                       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-branding-dark text-white text-xs">
                         {(page - 1) * limit + index + 1}
                       </span>
                     </TableCell>
-                    <TableCell className="font-medium px-4">
-                      {role.name}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground px-4">
+                    <TableCell className="font-medium px-4 py-3">{role.name}</TableCell>
+                    <TableCell className="text-muted-foreground px-4 py-3">
                       {role.description || "-"}
                     </TableCell>
-                    <TableCell className="text-muted-foreground px-4">
+                    <TableCell className="hidden md:table-cell text-muted-foreground px-4 py-3">
                       {new Date(role.createdAt).toLocaleDateString()}
                     </TableCell>
                     {showActions && (
-                      <TableCell className="px-4">
+                      <TableCell className="px-4 py-3">
                         <div className="flex items-center gap-1">
                           {canView && (
                             <Button
@@ -201,6 +200,33 @@ export function RolesTable({
           </Table>
         </div>
 
+        {/* Mobile Cards View - visible on mobile, hidden on lg+ */}
+        <div ref={tableRef} className="md:hidden p-4">
+          {isLoading ? (
+            <div className="flex flex-col gap-4">
+              {[...Array(5)].map((_, i) => (
+                <Card key={i}>
+                  <CardContent className="p-4">
+                    <Skeleton className="h-4 w-[120px] mb-2" />
+                    <Skeleton className="h-4 w-[180px] mb-2" />
+                    <Skeleton className="h-4 w-[100px]" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <RoleCardsList
+              data={data}
+              page={page}
+              limit={limit}
+              onView={onView}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              permissions={permissions}
+            />
+          )}
+        </div>
+
         <TablePagination
           page={page}
           limit={limit}
@@ -209,6 +235,7 @@ export function RolesTable({
           onLimitChange={onLimitChange}
           showingText={t(roleManagementConfig.pagination.showingKey)}
           rowsText={t(roleManagementConfig.pagination.rowsKey)}
+          scrollRef={tableRef}
         />
       </CardContent>
     </Card>

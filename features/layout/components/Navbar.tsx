@@ -38,7 +38,7 @@ export function Navbar({
   const { user, logout } = useAuth();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-background px-6">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background px-6">
       {/* Left side: Menu button (mobile) + Page title */}
       <div className="flex items-center gap-4">
         {/* Hamburger menu button - only visible on mobile */}

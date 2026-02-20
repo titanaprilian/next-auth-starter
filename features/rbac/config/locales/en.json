@@ -4,6 +4,11 @@
   "description": "Manage roles and their access permissions",
   "filterDescription": "Search and filter roles",
   "searchPlaceholder": "Search roles...",
+  "button": {
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
   "add": {
     "title": "Add New Role",
     "description": "Fill in the information below to create a new role."

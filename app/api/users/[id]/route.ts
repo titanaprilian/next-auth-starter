@@ -8,12 +8,14 @@ export async function GET(
   try {
     const { id } = await params;
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(API_ENDPOINTS.USERS.GET_BY_ID(id), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         ...(authHeader && { Authorization: authHeader }),
+        ...(acceptLanguage && { "accept-language": acceptLanguage }),
       },
       credentials: "include",
     });
@@ -41,12 +43,14 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(API_ENDPOINTS.USERS.UPDATE(id), {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         ...(authHeader && { Authorization: authHeader }),
+        ...(acceptLanguage && { "accept-language": acceptLanguage }),
       },
       body: JSON.stringify(body),
       credentials: "include",
@@ -74,12 +78,14 @@ export async function DELETE(
   try {
     const { id } = await params;
     const authHeader = request.headers.get("authorization");
+    const acceptLanguage = request.headers.get("accept-language");
 
     const response = await fetch(API_ENDPOINTS.USERS.DELETE(id), {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         ...(authHeader && { Authorization: authHeader }),
+        ...(acceptLanguage && { "accept-language": acceptLanguage }),
       },
       credentials: "include",
     });
