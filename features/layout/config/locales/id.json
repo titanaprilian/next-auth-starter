@@ -5,5 +5,7 @@
   "roles": "Peran & Izin",
   "settings": "Pengaturan",
   "systemName": "RBAC Admin",
-  "systemVersion": "v1.0"
+  "systemVersion": "v1.0",
+  "profile": "Profil",
+  "logout": "Keluar"
 }

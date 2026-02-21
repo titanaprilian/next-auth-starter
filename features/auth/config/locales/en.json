@@ -1,5 +1,11 @@
 {
   "pageTitle": "Login",
+  "profile": {
+    "pageTitle": "My Profile",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role"
+  },
   "systemName": "Next Auth Starter",
   "systemDescription": "Secure authentication with role-based access control for your application.",
   "form": {

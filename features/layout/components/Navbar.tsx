@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, LogOut, User, UserCog } from "lucide-react";
+import { Menu, LogOut, User } from "lucide-react";
 import { useAuth } from "@features/auth/context/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslations } from "@/lib/i18n/useTranslation";
 
 /**
  * Navbar component for authenticated pages.
@@ -36,6 +37,7 @@ export function Navbar({
   onMenuClick?: () => void;
 }) {
   const { user, logout } = useAuth();
+  const t = useTranslations();
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background px-6">
@@ -78,13 +80,7 @@ export function Navbar({
             <DropdownMenuItem asChild>
               <Link href="/profile" className="flex items-center">
                 <User className="mr-2 h-4 w-4" />
-                Profile
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/account" className="flex items-center">
-                <UserCog className="mr-2 h-4 w-4" />
-                My Account
+                {t("navigation.profile")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -93,7 +89,7 @@ export function Navbar({
               className="text-destructive"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              Logout
+              {t("navigation.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

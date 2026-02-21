@@ -5,5 +5,7 @@
   "roles": "Roles y Permisos",
   "settings": "Configuración",
   "systemName": "RBAC Admin",
-  "systemVersion": "v1.0"
+  "systemVersion": "v1.0",
+  "profile": "Perfil",
+  "logout": "Cerrar Sesión"
 }

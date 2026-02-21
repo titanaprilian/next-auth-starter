@@ -133,14 +133,20 @@ const NavItem = ({
  * Sidebar navigation component.
  * Renders the sidebar with logo, navigation items, and system info footer.
  * Uses branding-dark color theme.
- * 
+ *
  * @param isOpen - Whether the sidebar is open (for mobile)
  * @param onClose - Callback to close the sidebar (for mobile)
- * 
+ *
  * @example
  * <SidebarNav />
  */
-export function SidebarNav({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
+export function SidebarNav({
+  isOpen,
+  onClose,
+}: {
+  isOpen?: boolean;
+  onClose?: () => void;
+}) {
   const t = useTranslations();
   const handleNavigate = () => {
     if (onClose) {
@@ -157,33 +163,41 @@ export function SidebarNav({ isOpen, onClose }: { isOpen?: boolean; onClose?: ()
           onClick={onClose}
         />
       )}
-      
+
       {/* Sidebar */}
       <aside
         className={cn(
           "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col bg-branding-dark text-white transition-transform duration-300 lg:translate-x-0",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         {/* Logo / Brand */}
         <div className="flex h-16 items-center border-b border-white/10 px-6">
-          <h1 className="text-xl font-bold">{t(sidebarFooterConfig.nameKey)}</h1>
+          <h1 className="text-xl font-bold">
+            {t(sidebarFooterConfig.nameKey)}
+          </h1>
         </div>
 
         {/* Navigation Items */}
         <nav className="flex-1 space-y-1 overflow-y-auto p-4">
           {sidebarConfig.map((item) => (
-            <NavItem key={item.labelKey} item={item} onNavigate={handleNavigate} />
+            <NavItem
+              key={item.labelKey}
+              item={item}
+              onNavigate={handleNavigate}
+            />
           ))}
         </nav>
 
         {/* System Info Footer */}
-        <div className="border-t border-white/10 px-6 py-4 pb-20 lg:pb-4">
+        <div className="border-t border-white/10 px-6 py-4 pb-8 md:pb-4">
           <p className="text-sm font-medium text-white/80">
             {t(sidebarFooterConfig.nameKey)}
           </p>
           {sidebarFooterConfig.versionKey && (
-            <p className="text-xs text-white/50">{t(sidebarFooterConfig.versionKey)}</p>
+            <p className="text-xs text-white/50">
+              {t(sidebarFooterConfig.versionKey)}
+            </p>
           )}
         </div>
       </aside>

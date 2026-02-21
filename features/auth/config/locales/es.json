@@ -1,5 +1,11 @@
 {
   "pageTitle": "Iniciar Sesión",
+  "profile": {
+    "pageTitle": "Mi Perfil",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "role": "Rol"
+  },
   "systemName": "Next Auth Starter",
   "systemDescription": "Autenticación segura con control de acceso basado en roles para tu aplicación.",
   "form": {

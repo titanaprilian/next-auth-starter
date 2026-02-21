@@ -7,7 +7,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role_name?: string;
+  roleName?: string;
 }
 
 export interface AuthResponseData {

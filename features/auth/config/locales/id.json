@@ -1,5 +1,11 @@
 {
   "pageTitle": "Masuk",
+  "profile": {
+    "pageTitle": "Profil Saya",
+    "name": "Nama",
+    "email": "Email",
+    "role": "Peran"
+  },
   "systemName": "Next Auth Starter",
   "systemDescription": "Autentikasi aman dengan kontrol akses berbasis peran untuk aplikasi Anda.",
   "form": {
