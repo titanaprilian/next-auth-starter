@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useMyPermissions } from "../hooks/useRbac";
 import { MyPermission, MyPermissions } from "../types";
+import { hasValidSession } from "@/app/utils/axios";
 
 /**
  * Permission check options
@@ -74,7 +75,7 @@ export type FeatureValue = (typeof FEATURE_MAPPINGS)[FeatureName];
  * </PermissionsProvider>
  */
 export function PermissionsProvider({ children }: { children: ReactNode }) {
-  const { data, isLoading } = useMyPermissions();
+  const { data, isLoading } = useMyPermissions({ enabled: hasValidSession() });
 
   const permissionsData: MyPermissions = useMemo(() => {
     return data || { roleName: "", permissions: [] };

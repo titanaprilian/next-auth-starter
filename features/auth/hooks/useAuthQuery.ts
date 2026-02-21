@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { loginUser, logoutUser, fetchCurrentUser } from "../services/authApi";
 import { AuthResponse, User } from "../types";
 import { LoginFormData } from "../schemas/loginFormSchema";
-import { setAxiosToken, resetAuthState } from "@/app/utils/axios";
+import { setAxiosToken, resetAuthState, markWasLoggedIn, clearWasLoggedIn } from "@/app/utils/axios";
 
 /**
  * Query key factory for auth-related queries.
@@ -50,6 +50,7 @@ export const useLogin = () => {
       const token = response.data.access_token;
       resetAuthState(); // Clear any previous logout state
       setAxiosToken(token);
+      markWasLoggedIn(); // Mark user as logged in for session persistence
 
       return response;
     },
@@ -80,6 +81,7 @@ export const useLogout = () => {
     },
     onSuccess: () => {
       setAxiosToken(null);
+      clearWasLoggedIn();
       // Clear all cached queries to prevent stale data
       queryClient.clear();
     },

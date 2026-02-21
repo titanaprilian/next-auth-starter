@@ -13,7 +13,7 @@ import { useCurrentUser, useLogin, useLogout } from "../hooks/useAuthQuery";
 import { AuthContextType, AuthResponse } from "../types";
 import { LoginFormData } from "../schemas/loginFormSchema";
 import { AUTH_ROUTES } from "../lib/routes";
-import { setAxiosToken, setRefreshSubscriber, clearLogoutState } from "@/app/utils/axios";
+import { setAxiosToken, setRefreshSubscriber, clearLogoutState, hasValidSession } from "@/app/utils/axios";
 
 /**
  * Authentication context value type.
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const loginMutation = useLogin();
   const logoutMutation = useLogout();
-  const { data: user, isLoading } = useCurrentUser({ enabled: true });
+  const { data: user, isLoading } = useCurrentUser({ enabled: hasValidSession() });
 
   /**
    * Login function that:

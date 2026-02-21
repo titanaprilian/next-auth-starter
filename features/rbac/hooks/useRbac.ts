@@ -110,10 +110,11 @@ export function useRoleOptions() {
   });
 }
 
-export function useMyPermissions() {
+export function useMyPermissions({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery<MyPermissions>({
     queryKey: permissionKeys.me(),
     queryFn: fetchMyPermissions,
+    enabled,
   });
 }
 

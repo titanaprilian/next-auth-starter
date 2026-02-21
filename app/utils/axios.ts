@@ -1,3 +1,12 @@
+/**
+ * Authentication and axios configuration for the Next.js application.
+ * 
+ * Key concepts:
+ * - accessToken: JWT token stored in memory, sent in Authorization header
+ * - refresh_token: HTTP-only cookie, used to obtain new access tokens
+ * - localStorage flags: Used to track login/logout state across page navigations
+ */
+
 import axios from "axios";
 
 const BASE_URL = "/api/auth";
@@ -27,11 +36,13 @@ const setLogoutState = (value: boolean) => {
   }
 };
 
-let accessToken: string | null = null;
-let refreshSubscriber: ((token: string) => void) | null = null;
-let currentLocale: string = "en";
-let isRefreshing = false;
-let isLoggedOut = getLogoutState();
+// In-memory authentication state (reset on page refresh)
+let accessToken: string | null = null;          // JWT access token for API requests
+let refreshSubscriber: ((token: string) => void) | null = null;  // Callback for token refresh events
+let currentLocale: string = "en";                // Current locale for i18n
+let isRefreshing = false;                        // Flag to prevent multiple simultaneous refreshes
+let isLoggedOut = getLogoutState();              // Tracks if user has explicitly logged out
+// Queue for requests waiting for token refresh to complete
 let failedQueue: Array<{
   resolve: (value: unknown) => void;
   reject: (reason?: unknown) => void;
@@ -102,6 +113,65 @@ export const clearLogoutState = () => {
 };
 
 /**
+ * Checks if user has a valid session by looking for refresh_token cookie,
+ * access token in memory, OR if user was previously logged in (localStorage).
+ * 
+ * This is used by AuthProvider and PermissionsProvider to determine whether
+ * to fetch user data on app initialization. We check:
+ * 1. refresh_token cookie - indicates valid server session
+ * 2. accessToken in memory - set after successful login (before cookie available)
+ * 3. was_logged_in flag - localStorage flag set after successful login,
+ *    used to trigger token refresh on page refresh when cookie not yet available
+ * 
+ * Returns false if user has explicitly logged out (stored in localStorage).
+ * Only works in browser context (returns false on server).
+ */
+export const hasValidSession = (): boolean => {
+  if (!isBrowser) return false;
+  
+  const logoutState = getLogoutState();
+  const cookies = document.cookie;
+  const hasCookie = cookies.includes("refresh_token");
+  const hasToken = accessToken !== null;
+  const wasLoggedIn = localStorage.getItem("was_logged_in") === "true";
+  
+  // Don't make requests if user has explicitly logged out
+  if (logoutState) return false;
+  
+  // Check for refresh token cookie, access token in memory, OR was previously logged in
+  return hasCookie || hasToken || wasLoggedIn;
+};
+
+/**
+ * Marks that user has logged in successfully.
+ * 
+ * This is used to persist login state in localStorage so that on page refresh,
+ * we can detect that the user was previously logged in and attempt to refresh
+ * the access token using the refresh_token cookie.
+ * 
+ * The flow:
+ * 1. User logs in successfully → markWasLoggedIn() sets flag in localStorage
+ * 2. Page refreshes → hasValidSession() sees was_logged_in flag, returns true
+ * 3. Auth providers make API requests → get 401 because access token expired
+ * 4. Axios interceptor catches 401 → refreshes token using cookie
+ * 5. If refresh succeeds → requests continue normally
+ * 6. If refresh fails → redirect to login
+ */
+export const markWasLoggedIn = () => {
+  if (!isBrowser) return;
+  localStorage.setItem("was_logged_in", "true");
+};
+
+/**
+ * Clears the was_logged_in flag when user logs out.
+ * This ensures we don't attempt token refresh after explicit logout.
+ */
+export const clearWasLoggedIn = () => {
+  if (!isBrowser) return;
+  localStorage.removeItem("was_logged_in");
+};
+
+/**
  * Maps short locale code to full locale format for Accept-Language header.
  * e.g., "id" -> "id-ID", "es" -> "es-ES", "en" -> "en-US"
  */
@@ -136,7 +206,9 @@ export const setRefreshSubscriber = (callback: (token: string) => void) => {
 };
 
 /**
- * Main Axios instance for authenticated API requests.
+ * Main Axios instance for /api/auth endpoints (login, logout, refresh).
+ * Uses baseURL: /api/auth
+ * Does NOT include credentials (cookies) by default.
  */
 export const Axios = axios.create({
   baseURL: BASE_URL,
@@ -147,7 +219,11 @@ export const Axios = axios.create({
 
 /**
  * Axios instance for requests that need credentials (cookies).
- * Used for login/logout/refresh endpoints.
+ * Used specifically for login/logout/refresh endpoints where we need
+ * to send the refresh_token cookie to the server.
+ * 
+ * Key difference from Axios: withCredentials: true
+ * This ensures cookies are sent with cross-origin requests.
  */
 export const PlainAxios = axios.create({
   baseURL: BASE_URL,
@@ -158,8 +234,15 @@ export const PlainAxios = axios.create({
 });
 
 /**
- * Axios instance for /api routes (users, rbac, etc.)
- * Includes token refresh logic and auto-attaches Bearer token.
+ * Axios instance for /api routes (users, rbac, dashboard, etc.)
+ * 
+ * Features:
+ * - Automatically adds Authorization header with access token
+ * - Automatically adds accept-language header for i18n
+ * - Handles 401 errors by attempting token refresh
+ * - Redirects to login if refresh token is invalid/revoked
+ * 
+ * Does NOT include credentials by default - uses Bearer token instead.
  */
 export const ApiAxios = axios.create({
   baseURL: "/api",
@@ -169,6 +252,12 @@ export const ApiAxios = axios.create({
 });
 
 const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
+  /**
+   * Request interceptor for ApiAxios
+   * - Blocks requests if user has explicitly logged out
+   * - Adds Authorization header with access token
+   * - Adds accept-language header for i18n
+   */
   axiosInstance.interceptors.request.use((config) => {
     const logoutState = getLogoutState();
 
@@ -200,6 +289,15 @@ const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
         return Promise.reject(error);
       }
 
+      /**
+       * Response interceptor - handles 401 errors and token refresh
+       * 
+       * When a request returns 401 (unauthorized):
+       * 1. If already refreshing, queue the request to retry after refresh completes
+       * 2. If not refreshing, attempt to refresh the token using the refresh_token cookie
+       * 3. If refresh succeeds, retry the original request with new token
+       * 4. If refresh fails (401/400), force redirect to login page
+       */
       if (error.response?.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
           return new Promise((resolve, reject) => {
@@ -216,7 +314,8 @@ const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
         isRefreshing = true;
 
         try {
-          const { data } = await Axios.post("refresh");
+          // Use PlainAxios (withCredentials: true) to send refresh_token cookie
+          const { data } = await PlainAxios.post("refresh");
           const newAccessToken = data.data.access_token;
 
           setAxiosToken(newAccessToken);
@@ -230,10 +329,10 @@ const apiAxiosInterceptor = (axiosInstance: typeof ApiAxios) => {
           processQueue(refreshError, null);
           isRefreshing = false;
 
-          if (
-            (refreshError as { response?: { status: number } })?.response
-              ?.status === 401
-          ) {
+          const refreshErrorStatus = (refreshError as { response?: { status: number } })?.response?.status;
+          
+          // Force redirect to login when refresh fails (401 or 400 means token is invalid/revoked)
+          if (refreshErrorStatus === 401 || refreshErrorStatus === 400) {
             forceRedirectToLogin();
           }
 
